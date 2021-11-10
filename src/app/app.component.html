@@ -1,0 +1,62 @@
+<mat-toolbar color="primary">
+  <button mat-icon-button (click)="sidenav.toggle()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span>{{ title }}</span>
+  <span class="spacer"></span>
+  <span *ngIf="user$ | async as user">{{ user.name }}</span>
+</mat-toolbar>
+<div style="height: calc(100vh - 64px);">
+  <mat-sidenav-container fxFlexFill>
+    <mat-sidenav #sidenav fxLayout="column">
+      <div class="container">
+        <h2>Settings</h2>
+        <mat-form-field appearance="outline">
+          <mat-label>GitHub Token</mat-label>
+          <input matInput type="password" [formControl]="tokenControl">
+          <mat-icon matSuffix>key</mat-icon>
+        </mat-form-field>
+        <br/>
+        <mat-label>Polling Interval</mat-label>
+        <br/>
+        <mat-slider #slider [thumbLabel]="true" min="10" max="60" step="1"
+                    (change)="handlePollingIntervalChange(slider.value)"
+                    [value]="selectedPollingInterval$ | async" [disabled]="isNotLoggedIn$ | async">
+        </mat-slider>
+        <h2>Filter</h2>
+        <span>
+          <mat-form-field appearance="outline">
+            <mat-label>Teams</mat-label>
+            <mat-select multiple (selectionChange)="handleTeamsFilterChange($event.value)"
+                        [value]="selectedTeamsFilter$ | async" [compareWith]="compareTeams" [disabled]="isNotLoggedIn$ | async">
+              <mat-option *ngFor="let option of teams$ | async" [value]="option">
+                {{ option.slug }} ({{ option.organization.login }})
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </span>
+        <br/>
+        <mat-form-field appearance="outline">
+          <mat-label>Status</mat-label>
+          <mat-select multiple (selectionChange)="handleStatusFilterChange($event.value)"
+                      [value]="selectedStatusFilter$ | async" [disabled]="isNotLoggedIn$ | async">
+            <mat-option *ngFor="let option of workflowRunStatus" [value]="option">{{ option }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <br/>
+        <mat-form-field appearance="outline">
+          <mat-label>Conclusion</mat-label>
+          <mat-select multiple (selectionChange)="handleConclusionFilterChange($event.value)"
+                      [value]="selectedConclusionFilter$ | async" [disabled]="isNotLoggedIn$ | async">
+            <mat-option *ngFor="let option of workflowRunConclusions" [value]="option">{{ option }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-sidenav>
+    <mat-sidenav-content fxFlexFill>
+      <div class="container">
+        <actio-workflow-run-grid></actio-workflow-run-grid>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
