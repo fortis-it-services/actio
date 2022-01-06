@@ -1,4 +1,7 @@
 # actio
+![CI](https://github.com/fortis-it-services/actio/actions/workflows/main.yaml/badge.svg?event=push)
+![License](https://img.shields.io/github/license/fortis-it-services/actio)
+
 Monitor GitHub Actions
 
 ## Local Usage
