@@ -5,7 +5,7 @@
 >
   <mat-card-header>
     <mat-icon mat-card-avatar matTooltip="Queued" *ngIf="run.status === status.QUEUED">dynamic_feed</mat-icon>
-    <mat-icon mat-card-avatar matTooltip="Pending" *ngIf="run.status === status.IN_PROGRESS">pending</mat-icon>
+    <mat-icon mat-card-avatar matTooltip="In progress" *ngIf="run.status === status.IN_PROGRESS">pending</mat-icon>
     <mat-icon mat-card-avatar matTooltip="Success" class="icon-success" *ngIf="run.conclusion === conclusion.SUCCESS">check_circle</mat-icon>
     <mat-icon mat-card-avatar matTooltip="Failure" class="icon-failure" *ngIf="run.conclusion === conclusion.FAILURE">cancel</mat-icon>
     <mat-icon mat-card-avatar matTooltip="Canceled" *ngIf="run.conclusion === conclusion.CANCELLED">error</mat-icon>
