@@ -1,0 +1,13 @@
+---
+name: "Main Workflow"
+on: push
+jobs:
+  main:
+    name: "Main"
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout Source Code"
+        uses: actions/checkout@v2
+
+      - name: "Build Docker Image"
+        run: docker build -t actio -f docker/Dockerfile .
