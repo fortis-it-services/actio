@@ -8,7 +8,7 @@
     <mat-icon mat-card-avatar matTooltip="In progress" *ngIf="run.status === status.IN_PROGRESS">pending</mat-icon>
     <mat-icon mat-card-avatar matTooltip="Success" class="icon-success" *ngIf="run.conclusion === conclusion.SUCCESS">check_circle</mat-icon>
     <mat-icon mat-card-avatar matTooltip="Failure" class="icon-failure" *ngIf="run.conclusion === conclusion.FAILURE">cancel</mat-icon>
-    <mat-icon mat-card-avatar matTooltip="Canceled" *ngIf="run.conclusion === conclusion.CANCELLED">error</mat-icon>
+    <mat-icon mat-card-avatar matTooltip="Cancelled" *ngIf="run.conclusion === conclusion.CANCELLED">error</mat-icon>
     <mat-card-title>{{ run.repository.owner.login }} :: {{ run.repository.name }}
       :: {{ run.head_branch }}</mat-card-title>
     <mat-card-subtitle>#{{ run.run_number }} - {{ run.name }} - {{ run.event }}</mat-card-subtitle>
