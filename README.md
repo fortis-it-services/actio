@@ -4,6 +4,8 @@
 
 Monitor GitHub Actions
 
+![actio example](img/actio.png?raw=true)
+
 ## Local Usage
 If you want to try actio on your machine clone this repository and run
 ```shell
