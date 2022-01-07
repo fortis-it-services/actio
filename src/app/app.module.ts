@@ -28,6 +28,7 @@ import { reducers } from './state/app-state';
 import { HttpClientModule } from '@angular/common/http';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { extModules } from './build-specifics';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     FormsModule,
     MatSliderModule,
     MatTooltipModule,
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
+    extModules,
   ],
   providers: [MatIconRegistry],
   bootstrap: [AppComponent],
