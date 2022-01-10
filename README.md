@@ -19,16 +19,16 @@ Monitor your GitHub Actions workflow runs! All you need is your [PAT](#github-pe
   * workflows and
   * workflow runs
 
-## GitHub Personal Access Token
-At minimum, the following scopes needs to be [configured](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) for your personal access token:
-- repo
-- read:org
-
-If your organization is using SSO, you need to [authorize](https://docs.github.com/en/enterprise-cloud@latest/authentication/authenticating-with-saml-single-sign-on/authorizing-a-personal-access-token-for-use-with-saml-single-sign-on) your token. 
-
 ## Local Usage
 If you want to try actio on your machine run
 ```shell
 docker run --rm -p 8080:80 ghcr.io/fortis-it-services/actio
 ```
 and access it via <http://localhost:8080>.
+
+## GitHub Personal Access Token
+At minimum, the following scopes needs to be [configured](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) for your personal access token:
+- repo
+- read:org
+
+If your organization is using SSO, you need to [authorize](https://docs.github.com/en/enterprise-cloud@latest/authentication/authenticating-with-saml-single-sign-on/authorizing-a-personal-access-token-for-use-with-saml-single-sign-on) your token.
