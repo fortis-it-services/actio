@@ -27,12 +27,8 @@ At minimum, the following scopes needs to be [configured](https://docs.github.co
 If your organization is using SSO, you need to [authorize](https://docs.github.com/en/enterprise-cloud@latest/authentication/authenticating-with-saml-single-sign-on/authorizing-a-personal-access-token-for-use-with-saml-single-sign-on) your token. 
 
 ## Local Usage
-If you want to try actio on your machine clone this repository and run
+If you want to try actio on your machine run
 ```shell
-docker build -t actio -f docker/Dockerfile .
+docker run --rm -p 8080:80 ghcr.io/fortis-it-services/actio
 ```
-to build your own copy of actio and use
-```shell
-docker run --rm -p 8080:80 actio
-```
-to access it via <http://localhost:8080>.
+and access it via <http://localhost:8080>.
