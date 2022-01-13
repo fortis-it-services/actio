@@ -10,13 +10,21 @@ export const selectWorkflowRunsSortedAndFiltered = createSelector(
   selectStatusFilter,
   selectConclusionFilter,
   (
-    workflows: GithubWorkflowRunModel[],
+    workflowRuns: GithubWorkflowRunModel[],
     statusFilter: string[],
     conclusionFilter: string[],
-  ) => workflows
-    .filter(it => it.status === null || statusFilter.includes(it.status))
-    .filter(it => it.conclusion === null || conclusionFilter.includes(it.conclusion))
+  ) => workflowRuns
+    .filter(it => satisfiesCurrentFilters(it, statusFilter, conclusionFilter))
     .sort((a, b) =>
       b.id.toString().localeCompare(a.id.toString()),
     ),
 )
+
+function satisfiesCurrentFilters(
+  workflowRun: GithubWorkflowRunModel,
+  statusFilter: string[],
+  conclusionFilter: string[],
+): boolean {
+  return (workflowRun.status === null || statusFilter.includes(workflowRun.status)) &&
+    (workflowRun.conclusion === null || conclusionFilter.includes(workflowRun.conclusion))
+}
