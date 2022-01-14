@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { map, Observable } from 'rxjs';
+import { FormControl, FormGroup } from '@angular/forms';
+import { debounceTime, distinctUntilChanged, map, Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { GitHubTeamModel, GitHubUser, GithubWorkflowRunModel } from './git-hub.service';
 import {
@@ -33,50 +33,81 @@ export class AppComponent {
   workflowRunConclusions = Object.values(WorkflowRunConclusion)
 
   user$: Observable<GitHubUser | null>
-  isNotLoggedIn$: Observable<boolean>
   teams$: Observable<GitHubTeamModel[]>
   workflowRuns$: Observable<GithubWorkflowRunModel[]>
-  selectedTeamsFilter$: Observable<GitHubTeamModel[]>
-  selectedStatusFilter$: Observable<string[]>
-  selectedConclusionFilter$: Observable<string[]>
-  selectedPollingInterval$: Observable<number>
 
-  tokenControl = new FormControl('')
+  pollingIntervalControlKey = 'pollingIntervalControl'
+  teamsSelectionControlKey = 'teamsSelectionControl'
+  statusSelectionControlKey = 'statusSelectionControl'
+  conclusionSelectionControlKey = 'conclusionSelectionControl'
+
+  tokenControl = new FormControl()
+
+  configurationFormGroup = new FormGroup({
+    [this.pollingIntervalControlKey]: new FormControl(),
+    [this.teamsSelectionControlKey]: new FormControl(),
+    [this.statusSelectionControlKey]: new FormControl(),
+    [this.conclusionSelectionControlKey]: new FormControl(),
+  })
 
   constructor(private store: Store) {
     this.user$ = store.select(selectUserProfile)
     this.teams$ = store.select(selectSortedUserTeams)
     this.workflowRuns$ = store.select(selectWorkflowRuns)
-    this.selectedTeamsFilter$ = store.select(selectTeamsFilter)
-    this.selectedStatusFilter$ = store.select(selectStatusFilter)
-    this.selectedConclusionFilter$ = store.select(selectConclusionFilter)
-    this.selectedPollingInterval$ = store.select(selectPollingInterval)
 
-    this.isNotLoggedIn$ = this.user$.pipe(
-      map(it => it === null),
-    )
+    this.enableConfigurationFormGroupAfterLogin()
 
     this.tokenControl.valueChanges
-      .subscribe(token => this.store.dispatch(changeToken({ token: token })))
-  }
+      .pipe(
+        debounceTime(500),
+        distinctUntilChanged(),
+      )
+      .subscribe(it => this.store.dispatch(changeToken({ token: it })))
 
-  handleTeamsFilterChange(event: GitHubTeamModel[]) {
-    this.store.dispatch(changeTeamsFilter({ filter: event }))
-  }
+    this.configurationFormGroup.controls[this.pollingIntervalControlKey].valueChanges
+      .pipe(distinctUntilChanged())
+      .subscribe(it => this.store.dispatch(changePollingInterval({ interval: it })))
 
-  handleStatusFilterChange(event: string[]) {
-    this.store.dispatch(changeStatusFilter({ filter: event }))
-  }
+    this.store.select(selectPollingInterval)
+      .subscribe(it => this.configurationFormGroup.controls[this.pollingIntervalControlKey].setValue(it))
 
-  handleConclusionFilterChange(event: string[]) {
-    this.store.dispatch(changeConclusionFilter({ filter: event }))
-  }
+    this.configurationFormGroup.controls[this.teamsSelectionControlKey].valueChanges
+      .pipe(distinctUntilChanged())
+      .subscribe(it => this.store.dispatch(changeTeamsFilter({ filter: it })))
 
-  handlePollingIntervalChange(event: number) {
-    this.store.dispatch(changePollingInterval({ interval: event }))
+    this.store.select(selectTeamsFilter)
+      .subscribe(it => this.configurationFormGroup.controls[this.teamsSelectionControlKey].setValue(it))
+
+    this.configurationFormGroup.controls[this.statusSelectionControlKey].valueChanges
+      .pipe(distinctUntilChanged())
+      .subscribe(it => this.store.dispatch(changeStatusFilter({ filter: it })))
+
+    this.store.select(selectStatusFilter)
+      .subscribe(it => this.configurationFormGroup.controls[this.statusSelectionControlKey].setValue(it))
+
+    this.configurationFormGroup.controls[this.conclusionSelectionControlKey].valueChanges
+      .pipe(distinctUntilChanged())
+      .subscribe(it => this.store.dispatch(changeConclusionFilter({ filter: it })))
+
+    this.store.select(selectConclusionFilter)
+      .subscribe(it => this.configurationFormGroup.controls[this.conclusionSelectionControlKey].setValue(it))
   }
 
   compareTeams(o1: GitHubTeamModel, o2: GitHubTeamModel) {
     return o1.slug == o2.slug && o1.organization.login == o2.organization.login
+  }
+
+  private enableConfigurationFormGroupAfterLogin() {
+    this.user$.pipe(
+      map(it => it !== null),
+    )
+      .subscribe(isUserAuthenticated => {
+          if (isUserAuthenticated) {
+            this.configurationFormGroup.enable()
+          } else {
+            this.configurationFormGroup.disable()
+          }
+        },
+      )
   }
 }
