@@ -28,3 +28,8 @@ export const selectPollingIntervalInMillis = createSelector(
   selectConfigurationState,
   (state: ConfigurationState) => (state.pollingInterval || 30) * 1000,
 );
+
+export const selectWorkflowNamesFilter = createSelector(
+  selectConfigurationState,
+  (state: ConfigurationState) => state.filter.workflowNames,
+);

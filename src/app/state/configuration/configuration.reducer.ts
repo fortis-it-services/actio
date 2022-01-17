@@ -1,10 +1,11 @@
 import { on } from '@ngrx/store';
 
 import {
+  addWorkflowNameFilter,
   changeConclusionFilter,
   changePollingInterval,
   changeStatusFilter,
-  changeTeamsFilter,
+  changeTeamsFilter, removeWorkflowNameFilter,
 } from './configuration.actions';
 import { WorkflowRunStatus } from '../../workflow-run/workflow-run-status.enum';
 import { WorkflowRunConclusion } from '../../workflow-run/workflow-run-conclusion.enum';
@@ -18,6 +19,7 @@ const initialState: ConfigurationState = {
     teams: [],
     status: Object.values(WorkflowRunStatus),
     conclusion: Object.values(WorkflowRunConclusion),
+    workflowNames: [],
   },
 };
 
@@ -30,6 +32,7 @@ export const configurationReducer = createRehydrateReducer(
       teams: filter,
       status: state.filter.status,
       conclusion: state.filter.conclusion,
+      workflowNames: state.filter.workflowNames,
     },
   })),
   on(changeStatusFilter, (state, { filter }): ConfigurationState => ({
@@ -38,6 +41,7 @@ export const configurationReducer = createRehydrateReducer(
       teams: state.filter.teams,
       status: filter,
       conclusion: state.filter.conclusion,
+      workflowNames: state.filter.workflowNames,
     },
   })),
   on(changeConclusionFilter, (state, { filter }): ConfigurationState => ({
@@ -46,10 +50,29 @@ export const configurationReducer = createRehydrateReducer(
       teams: state.filter.teams,
       status: state.filter.status,
       conclusion: filter,
+      workflowNames: state.filter.workflowNames,
     },
   })),
   on(changePollingInterval, (state, { interval }): ConfigurationState => ({
     ...state,
     pollingInterval: interval ?? initialState.pollingInterval,
+  })),
+  on(addWorkflowNameFilter, (state, { filter }): ConfigurationState => ({
+    ...state,
+    filter: {
+      teams: state.filter.teams,
+      status: state.filter.status,
+      conclusion: state.filter.conclusion,
+      workflowNames: [...new Set([...state.filter.workflowNames, filter])],
+    },
+  })),
+  on(removeWorkflowNameFilter, (state, { filter }): ConfigurationState => ({
+    ...state,
+    filter: {
+      teams: state.filter.teams,
+      status: state.filter.status,
+      conclusion: state.filter.conclusion,
+      workflowNames: state.filter.workflowNames.filter(it => it !== filter),
+    },
   })),
 );

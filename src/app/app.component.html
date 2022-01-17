@@ -48,6 +48,23 @@
               <mat-option *ngFor="let option of workflowRunConclusions" [value]="option">{{ option }}</mat-option>
             </mat-select>
           </mat-form-field>
+          <br/>
+          <mat-form-field appearance="outline">
+            <mat-label>Workflow Names</mat-label>
+            <mat-chip-list #chipList aria-label="Workflow Name Selection" [formControlName]="workflowNameSelectionControlKey">
+              <mat-chip *ngFor="let name of workflowNamesFilter$ | async" (removed)="remove(name)">
+                {{ name }}
+                <button matChipRemove>
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              </mat-chip>
+              <input placeholder="Add Workflow Name..."
+                     [matChipInputFor]="chipList"
+                     [matChipInputSeparatorKeyCodes]="chipSeparatorKeysCodes"
+                     [matChipInputAddOnBlur]="true"
+                     (matChipInputTokenEnd)="add($event)">
+            </mat-chip-list>
+          </mat-form-field>
         </form>
       </div>
     </mat-sidenav>

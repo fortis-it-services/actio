@@ -6,5 +6,6 @@ export interface ConfigurationState {
     conclusion: string[],
     status: string[],
     teams: GitHubTeamModel[],
+    workflowNames: string[],
   }
 }

@@ -13,6 +13,7 @@ Monitor your GitHub Actions workflow runs! All you need is your [PAT](#github-pe
   * team,
   * status (e.g. queued, in progress, …) and
   * conclusion (e.g. success, failure, …)
+  * workflow names (case-insensitive, substring)
 * Polling for new
   * repositories,
   * branches,

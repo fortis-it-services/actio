@@ -4,11 +4,12 @@ import { debounceTime, distinctUntilChanged, map, Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { GitHubTeamModel, GitHubUser, GithubWorkflowRunModel } from './git-hub.service';
 import {
+  addWorkflowNameFilter,
   changeConclusionFilter,
   changePollingInterval,
   changeStatusFilter,
   changeTeamsFilter,
-  changeToken,
+  changeToken, removeWorkflowNameFilter,
 } from './state/configuration/configuration.actions';
 import { selectWorkflowRuns } from './state/workflow/workflow.selectors';
 import { selectSortedUserTeams, selectUserProfile } from './state/user/user.selectors';
@@ -17,9 +18,11 @@ import {
   selectConclusionFilter,
   selectPollingInterval,
   selectStatusFilter,
-  selectTeamsFilter,
+  selectTeamsFilter, selectWorkflowNamesFilter,
 } from './state/configuration/configuration.selectors';
 import { WorkflowRunConclusion } from './workflow-run/workflow-run-conclusion.enum';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { MatChipInputEvent } from '@angular/material/chips';
 
 @Component({
   selector: 'actio-root',
@@ -31,15 +34,18 @@ export class AppComponent {
 
   workflowRunStatus = Object.values(WorkflowRunStatus)
   workflowRunConclusions = Object.values(WorkflowRunConclusion)
+  chipSeparatorKeysCodes: number[] = [ENTER, COMMA]
 
   user$: Observable<GitHubUser | null>
   teams$: Observable<GitHubTeamModel[]>
   workflowRuns$: Observable<GithubWorkflowRunModel[]>
+  workflowNamesFilter$: Observable<string[]>
 
   pollingIntervalControlKey = 'pollingIntervalControl'
   teamsSelectionControlKey = 'teamsSelectionControl'
   statusSelectionControlKey = 'statusSelectionControl'
   conclusionSelectionControlKey = 'conclusionSelectionControl'
+  workflowNameSelectionControlKey = 'workflowNameSelectionControl'
 
   tokenControl = new FormControl()
 
@@ -48,12 +54,14 @@ export class AppComponent {
     [this.teamsSelectionControlKey]: new FormControl(),
     [this.statusSelectionControlKey]: new FormControl(),
     [this.conclusionSelectionControlKey]: new FormControl(),
+    [this.workflowNameSelectionControlKey]: new FormControl(),
   })
 
   constructor(private store: Store) {
     this.user$ = store.select(selectUserProfile)
     this.teams$ = store.select(selectSortedUserTeams)
     this.workflowRuns$ = store.select(selectWorkflowRuns)
+    this.workflowNamesFilter$ = store.select(selectWorkflowNamesFilter)
 
     this.enableConfigurationFormGroupAfterLogin()
 
@@ -95,6 +103,20 @@ export class AppComponent {
 
   compareTeams(o1: GitHubTeamModel, o2: GitHubTeamModel) {
     return o1.slug == o2.slug && o1.organization.login == o2.organization.login
+  }
+
+  add(event: MatChipInputEvent): void {
+    const value = (event.value || '').trim();
+
+    if (value) {
+      this.store.dispatch(addWorkflowNameFilter({ filter: value }))
+    }
+
+    event.chipInput!.clear();
+  }
+
+  remove(workflowName: string): void {
+    this.store.dispatch(removeWorkflowNameFilter({ filter: workflowName }))
   }
 
   private enableConfigurationFormGroupAfterLogin() {
