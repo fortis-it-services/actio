@@ -38,10 +38,18 @@ export function createRehydrateReducer<S, A extends Action = Action>(
   ...ons: ReducerTypes<S, ActionCreator[]>[]
 ): ActionReducer<S, A> {
 
-  const item = localStorage.getItem(key);
+  const prefix = 'actio'
+  const prefixedKey = `${prefix}.${key}`
+  const stateVersion = '1'
 
-  const newInitialState =
-    (item && JSON.parse(item)) ?? initialState;
+  const item = localStorage.getItem(prefixedKey)
+  const parsedItem = item && JSON.parse(item)
+
+  let newInitialState = parsedItem ?? initialState
+
+  if (parsedItem?.version !== stateVersion) {
+    newInitialState = initialState
+  }
 
   const newOns: ReducerTypes<S, ActionCreator[]>[] = [];
 
@@ -52,7 +60,9 @@ export function createRehydrateReducer<S, A extends Action = Action>(
     ) => {
       // @ts-ignore
       const newState = oldOn.reducer(state, action);
-      localStorage.setItem(key, JSON.stringify(newState));
+      const newStateWithVersion = { ...newState, version: stateVersion }
+
+      localStorage.setItem(prefixedKey, JSON.stringify(newStateWithVersion));
       return newState;
     };
     // @ts-ignore
