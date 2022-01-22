@@ -35,3 +35,8 @@ export const selectFilteredUserTeams = createSelector(
       .filter(team => filter.map(it => `${it.organization}-${it.slug}`).includes(`${team.organization}-${team.slug}`))
   },
 )
+
+export const selectTeamRepositories = createSelector(
+  selectUserFeature,
+  (state: UserState) => state.teamRepositories,
+)

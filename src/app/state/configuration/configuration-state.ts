@@ -1,4 +1,4 @@
-import { GitHubTeamModel } from '../../git-hub.service';
+import { GitHubTeamModel, GitHubTeamRepositoryModel } from '../../git-hub.service';
 
 export interface ConfigurationState {
   pollingInterval: number,
@@ -6,6 +6,7 @@ export interface ConfigurationState {
     conclusion: string[],
     status: string[],
     teams: GitHubTeamModel[],
+    teamRepository: GitHubTeamRepositoryModel[],
     workflowNames: string[],
   }
 }

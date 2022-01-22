@@ -4,7 +4,7 @@ import {
   addWorkflowNameFilter,
   changeConclusionFilter,
   changePollingInterval,
-  changeStatusFilter,
+  changeStatusFilter, changeTeamRepositoryFilter,
   changeTeamsFilter, removeWorkflowNameFilter,
 } from './configuration.actions';
 import { WorkflowRunStatus } from '../../workflow-run/workflow-run-status.enum';
@@ -17,6 +17,7 @@ const initialState: ConfigurationState = {
   pollingInterval: 30,
   filter: {
     teams: [],
+    teamRepository: [],
     status: Object.values(WorkflowRunStatus),
     conclusion: Object.values(WorkflowRunConclusion),
     workflowNames: [],
@@ -30,6 +31,17 @@ export const configurationReducer = createRehydrateReducer(
     ...state,
     filter: {
       teams: filter,
+      teamRepository: state.filter.teamRepository,
+      status: state.filter.status,
+      conclusion: state.filter.conclusion,
+      workflowNames: state.filter.workflowNames,
+    },
+  })),
+  on(changeTeamRepositoryFilter, (state, { filter }): ConfigurationState => ({
+    ...state,
+    filter: {
+      teams: state.filter.teams,
+      teamRepository: filter,
       status: state.filter.status,
       conclusion: state.filter.conclusion,
       workflowNames: state.filter.workflowNames,
@@ -39,6 +51,7 @@ export const configurationReducer = createRehydrateReducer(
     ...state,
     filter: {
       teams: state.filter.teams,
+      teamRepository: state.filter.teamRepository,
       status: filter,
       conclusion: state.filter.conclusion,
       workflowNames: state.filter.workflowNames,
@@ -48,6 +61,7 @@ export const configurationReducer = createRehydrateReducer(
     ...state,
     filter: {
       teams: state.filter.teams,
+      teamRepository: state.filter.teamRepository,
       status: state.filter.status,
       conclusion: filter,
       workflowNames: state.filter.workflowNames,
@@ -61,6 +75,7 @@ export const configurationReducer = createRehydrateReducer(
     ...state,
     filter: {
       teams: state.filter.teams,
+      teamRepository: state.filter.teamRepository,
       status: state.filter.status,
       conclusion: state.filter.conclusion,
       workflowNames: [...new Set([...state.filter.workflowNames, filter])],
@@ -70,6 +85,7 @@ export const configurationReducer = createRehydrateReducer(
     ...state,
     filter: {
       teams: state.filter.teams,
+      teamRepository: state.filter.teamRepository,
       status: state.filter.status,
       conclusion: state.filter.conclusion,
       workflowNames: state.filter.workflowNames.filter(it => it !== filter),

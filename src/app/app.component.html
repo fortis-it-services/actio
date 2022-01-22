@@ -33,7 +33,20 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
-        </span>
+          </span>
+          <br/>
+          <span>
+          <mat-form-field appearance="outline">
+            <mat-label>repositories</mat-label>
+            <mat-select multiple [formControlName]="teamRepositoriesSelectionControlKey">
+              <mat-optgroup *ngFor="let teamRepository of teamRepositories$ | async" [label]="'Team ' + teamRepository.team.slug">
+              <mat-option *ngFor="let repository of teamRepository.repositories" [value]="{team: teamRepository.team, repository: repository}">
+                {{ repository.name }}
+              </mat-option>
+              </mat-optgroup>
+            </mat-select>
+          </mat-form-field>
+          </span>
           <br/>
           <mat-form-field appearance="outline">
             <mat-label>Status</mat-label>
