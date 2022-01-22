@@ -9,6 +9,11 @@ export const selectTeamsFilter = createSelector(
   (state: ConfigurationState) => state.filter.teams,
 )
 
+export const selectTeamRepositoryFilter = createSelector(
+  selectConfigurationState,
+  (state: ConfigurationState) => state.filter.teamRepository,
+)
+
 export const selectStatusFilter = createSelector(
   selectConfigurationState,
   (state: ConfigurationState) => state.filter.status,

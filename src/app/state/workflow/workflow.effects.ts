@@ -5,9 +5,9 @@ import { loadTeamsSuccess } from '../user/user.actions';
 import { pollWorkflowsRunsSuccess, startPollingWorkflowRuns, stopPollingWorkflowRuns } from './workflow.actions';
 import { GitHubService } from '../../git-hub.service';
 import { Store } from '@ngrx/store';
-import { selectPollingIntervalInMillis } from '../configuration/configuration.selectors';
+import { selectPollingIntervalInMillis, selectTeamRepositoryFilter } from '../configuration/configuration.selectors';
 import { changePollingInterval, changeTeamsFilter } from '../configuration/configuration.actions';
-import { selectFilteredUserTeams } from '../user/user.selectors';
+import { selectFilteredUserTeams} from '../user/user.selectors';
 
 @Injectable()
 export class WorkflowEffects {
@@ -33,9 +33,10 @@ export class WorkflowEffects {
       switchMap(([_, pollingInterval]) =>
         timer(0, pollingInterval).pipe(
           takeUntil(this.actions$.pipe(ofType(stopPollingWorkflowRuns))),
-          concatLatestFrom(() => this.store.select(selectFilteredUserTeams)),
-          switchMap(([_, teams]) =>
-            this.gitHubService.loadWorkflowRuns(teams)
+          concatLatestFrom(() => [this.store.select(selectFilteredUserTeams),
+            this.store.select(selectTeamRepositoryFilter)]),
+          switchMap(([_, teams, teamRepositories]) =>
+            this.gitHubService.loadWorkflowRuns(teams, teamRepositories)
               .pipe(
                 map(workflowRuns => pollWorkflowsRunsSuccess({ workflowRuns })),
               ),

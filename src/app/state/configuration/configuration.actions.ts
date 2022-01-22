@@ -11,6 +11,11 @@ export const changeTeamsFilter = createAction(
   props<{ filter: GitHubTeamModel[] }>(),
 );
 
+export const changeTeamRepositoryFilter = createAction(
+    '[Configuration] Change Repos Filter',
+    props<{ filter: any[] }>(),
+);
+
 export const changeStatusFilter = createAction(
   '[Configuration] Change Status Filter',
   props<{ filter: string[] }>(),

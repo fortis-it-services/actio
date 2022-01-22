@@ -25,6 +25,16 @@ export interface GitHubRepositoryModel {
   archived?: boolean,
 }
 
+export interface GitHubTeamRepositoriesModel {
+  team: GitHubTeamModel,
+  repositories: GitHubRepositoryModel[],
+}
+
+export interface GitHubTeamRepositoryModel {
+  team: GitHubTeamModel,
+  repository: GitHubRepositoryModel,
+}
+
 export interface GithubWorkflowModel {
   id: number,
 }
@@ -62,20 +72,21 @@ export class GitHubService {
   constructor() {
   }
 
-  loadWorkflowRuns(teams: GitHubTeamModel[]): Observable<GithubWorkflowRunModel[]> {
+  loadWorkflowRuns(teams: GitHubTeamModel[], teamRepositories: GitHubTeamRepositoryModel[]): Observable<GithubWorkflowRunModel[]> {
     return of(teams).pipe(
       mergeAll(),
-      mergeMap(team => this.loadRepositories(team.slug, team.organization.login)),
-      mergeMap(repo => this.loadBranches(repo.owner.login, repo.name).pipe(
-        zipWith(this.loadWorkflows(repo.owner.login, repo.name)),
+      mergeMap(team => teamRepositories
+        .filter(teamRepository => teamRepository.team.slug == team.slug && teamRepository.team.organization == team.organization)),
+      mergeMap(repo => this.loadBranches(repo.repository.owner.login, repo.repository.name).pipe(
+        zipWith(this.loadWorkflows(repo.repository.owner.login, repo.repository.name)),
         map(([branches, workflows]) =>
           branches.flatMap(branch => workflows.map(workflow => ([branch, workflow] as const))),
         ),
         mergeAll(),
         map(([branch, workflow]) => ({
           branch: branch.name,
-          owner: repo.owner.login,
-          repo: repo.name,
+          owner: repo.repository.owner.login,
+          repo: repo.repository.name,
           workflow_id: workflow.id,
         })),
       )),
@@ -117,6 +128,14 @@ export class GitHubService {
       )
   }
 
+  loadTeamRepositories(team: GitHubTeamModel): Observable<GitHubTeamRepositoriesModel> {
+    return from(this.octokit.rest.teams.listReposInOrg({org: team.organization.login, team_slug: team.slug}))
+      .pipe(
+        map(repositories => ({team: team, repositories: repositories.data}))
+    )
+  }
+
+  //TODO: is this method still necessary? Why was pagination included here?
   private loadRepositories(team_slug: string, org?: string): Observable<GitHubRepositoryModel> {
     return from(this.octokit.paginate(
       this.octokit.rest.teams.listReposInOrg,

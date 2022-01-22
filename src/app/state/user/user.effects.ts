@@ -1,8 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { changeToken } from '../configuration/configuration.actions';
-import { catchError, map, mergeMap, of } from 'rxjs';
-import { loadRateLimitSuccess, loadTeamsSuccess, loginFailure, loginSuccess } from './user.actions';
+import { catchError, forkJoin, map, mergeMap, of } from 'rxjs';
+import {
+  loadRateLimitSuccess,
+  loadTeamRepositoriesSuccess,
+  loadTeamsSuccess,
+  loginFailure,
+  loginSuccess
+} from './user.actions';
 import { GitHubService } from '../../git-hub.service';
 import { pollWorkflowsRunsSuccess } from '../workflow/workflow.actions';
 
@@ -33,6 +39,15 @@ export class UserEffects {
       ofType(loginSuccess),
       mergeMap(_ => this.gitHubService.loadTeams()),
       map(teams => loadTeamsSuccess({ teams })),
+    )
+  });
+
+  loadTeamRepositories$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(loadTeamsSuccess),
+      map(it => it.teams),
+      mergeMap(teams => forkJoin(teams.map(team => this.gitHubService.loadTeamRepositories(team)))),
+      map(teamRepositories => loadTeamRepositoriesSuccess({ teamRepositories })),
     )
   });
 

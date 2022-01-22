@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { GitHubRateLimitModel, GitHubTeamModel, GitHubUser } from '../../git-hub.service';
+import { GitHubRateLimitModel, GitHubTeamModel, GitHubTeamRepositoriesModel, GitHubUser } from '../../git-hub.service';
 
 export const loginSuccess = createAction(
   '[GitHub API] Login Success',
@@ -18,4 +18,9 @@ export const loadRateLimitSuccess = createAction(
 export const loadTeamsSuccess = createAction(
   '[GitHub API] Load Teams Success',
   props<{ teams: GitHubTeamModel[] }>(),
+);
+
+export const loadTeamRepositoriesSuccess = createAction(
+  '[GitHub API] Load Team Repositories Success',
+  props<{ teamRepositories: GitHubTeamRepositoriesModel[] }>(),
 );

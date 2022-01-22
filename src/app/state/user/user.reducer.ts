@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { loadRateLimitSuccess, loadTeamsSuccess, loginFailure, loginSuccess } from './user.actions';
+import { loadRateLimitSuccess, loadTeamRepositoriesSuccess, loadTeamsSuccess, loginFailure, loginSuccess } from './user.actions';
 import { UserState } from './user-state';
 import { GitHubRateLimitModel } from '../../git-hub.service';
 
@@ -7,6 +7,7 @@ const initialState: UserState = {
   profile: null,
   rateLimits: {} as GitHubRateLimitModel,
   teams: [],
+  teamRepositories: []
 }
 
 export const userReducer = createReducer(
@@ -23,5 +24,9 @@ export const userReducer = createReducer(
   on(loadTeamsSuccess, (state, { teams }): UserState => ({
     ...state,
     teams,
+  })),
+  on(loadTeamRepositoriesSuccess, (state, { teamRepositories }): UserState => ({
+    ...state,
+    teamRepositories,
   })),
 );
