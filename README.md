@@ -24,9 +24,15 @@ Monitor your GitHub Actions workflow runs! All you need is your [PAT](#github-pe
 ## Local Usage
 If you want to try actio on your machine run
 ```shell
-docker run --rm -p 8080:80 ghcr.io/fortis-it-services/actio
+docker run --rm --pull=always -p 8888:80 ghcr.io/fortis-it-services/actio
 ```
-and access it via <http://localhost:8080>.
+to always update automatically to the latest release or
+```shell
+docker run --rm -p 8888:80 ghcr.io/fortis-it-services/actio:${MY_DESIRED_VERSION}
+```
+to stick to a specific release.
+
+After that you can access actio via <http://localhost:8080>.
 
 ## GitHub Personal Access Token
 At minimum, the following scopes needs to be [configured](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) for your personal access token:
