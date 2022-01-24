@@ -7,5 +7,6 @@ export interface ConfigurationState {
     status: string[],
     teams: GitHubTeamModel[],
     workflowNames: string[],
-  }
+  },
+  maxWorkflowRunAge: number,
 }

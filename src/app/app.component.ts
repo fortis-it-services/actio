@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { GitHubTeamModel, GitHubUser, GithubWorkflowRunModel } from './git-hub.service';
 import {
   addWorkflowNameFilter,
-  changeConclusionFilter,
+  changeConclusionFilter, changeMaxWorkflowRunAge,
   changePollingInterval,
   changeStatusFilter,
   changeTeamsFilter,
@@ -15,7 +15,7 @@ import { selectWorkflowRuns } from './state/workflow/workflow.selectors';
 import { selectSortedUserTeams, selectUserProfile } from './state/user/user.selectors';
 import { WorkflowRunStatus } from './workflow-run/workflow-run-status.enum';
 import {
-  selectConclusionFilter,
+  selectConclusionFilter, selectMaxWorkflowRunAge,
   selectPollingInterval,
   selectStatusFilter,
   selectTeamsFilter, selectWorkflowNamesFilter,
@@ -42,6 +42,7 @@ export class AppComponent {
   workflowNamesFilter$: Observable<string[]>
 
   pollingIntervalControlKey = 'pollingIntervalControl'
+  maxWorkflowRunAgeControlKey = 'workflowRunHistoryControl'
   teamsSelectionControlKey = 'teamsSelectionControl'
   statusSelectionControlKey = 'statusSelectionControl'
   conclusionSelectionControlKey = 'conclusionSelectionControl'
@@ -49,8 +50,12 @@ export class AppComponent {
 
   tokenControl = new FormControl()
 
-  configurationFormGroup = new FormGroup({
+  settingsFormGroup = new FormGroup({
     [this.pollingIntervalControlKey]: new FormControl(),
+    [this.maxWorkflowRunAgeControlKey]: new FormControl(),
+  })
+
+  configurationFormGroup = new FormGroup({
     [this.teamsSelectionControlKey]: new FormControl(),
     [this.statusSelectionControlKey]: new FormControl(),
     [this.conclusionSelectionControlKey]: new FormControl(),
@@ -72,12 +77,19 @@ export class AppComponent {
       )
       .subscribe(it => this.store.dispatch(changeToken({ token: it })))
 
-    this.configurationFormGroup.controls[this.pollingIntervalControlKey].valueChanges
+    this.settingsFormGroup.controls[this.pollingIntervalControlKey].valueChanges
       .pipe(distinctUntilChanged())
       .subscribe(it => this.store.dispatch(changePollingInterval({ interval: it })))
 
     this.store.select(selectPollingInterval)
-      .subscribe(it => this.configurationFormGroup.controls[this.pollingIntervalControlKey].setValue(it))
+      .subscribe(it => this.settingsFormGroup.controls[this.pollingIntervalControlKey].setValue(it))
+
+    this.settingsFormGroup.controls[this.maxWorkflowRunAgeControlKey].valueChanges
+      .pipe(distinctUntilChanged())
+      .subscribe(it => this.store.dispatch(changeMaxWorkflowRunAge({ age: it })))
+
+    this.store.select(selectMaxWorkflowRunAge)
+      .subscribe(it => this.settingsFormGroup.controls[this.maxWorkflowRunAgeControlKey].setValue(it))
 
     this.configurationFormGroup.controls[this.teamsSelectionControlKey].valueChanges
       .pipe(distinctUntilChanged())

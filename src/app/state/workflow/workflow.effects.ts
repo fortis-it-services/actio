@@ -5,8 +5,12 @@ import { loadTeamsSuccess } from '../user/user.actions';
 import { pollWorkflowsRunsSuccess, startPollingWorkflowRuns, stopPollingWorkflowRuns } from './workflow.actions';
 import { GitHubService } from '../../git-hub.service';
 import { Store } from '@ngrx/store';
-import { selectPollingIntervalInMillis } from '../configuration/configuration.selectors';
-import { changePollingInterval, changeTeamsFilter } from '../configuration/configuration.actions';
+import { selectMaxWorkflowRunAge, selectPollingIntervalInMillis } from '../configuration/configuration.selectors';
+import {
+  changeMaxWorkflowRunAge,
+  changePollingInterval,
+  changeTeamsFilter,
+} from '../configuration/configuration.actions';
 import { selectFilteredUserTeams } from '../user/user.selectors';
 
 @Injectable()
@@ -21,7 +25,7 @@ export class WorkflowEffects {
 
   stopPollingWorkflowRuns$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(changePollingInterval, changeTeamsFilter),
+      ofType(changePollingInterval, changeTeamsFilter, changeMaxWorkflowRunAge),
       map(_ => stopPollingWorkflowRuns()),
     )
   })
@@ -33,9 +37,12 @@ export class WorkflowEffects {
       switchMap(([_, pollingInterval]) =>
         timer(0, pollingInterval).pipe(
           takeUntil(this.actions$.pipe(ofType(stopPollingWorkflowRuns))),
-          concatLatestFrom(() => this.store.select(selectFilteredUserTeams)),
-          switchMap(([_, teams]) =>
-            this.gitHubService.loadWorkflowRuns(teams)
+          concatLatestFrom(() => [
+            this.store.select(selectFilteredUserTeams),
+            this.store.select(selectMaxWorkflowRunAge),
+          ]),
+          switchMap(([_, teams, maxWorkflowRunAge]) =>
+            this.gitHubService.loadWorkflowRuns(teams, maxWorkflowRunAge)
               .pipe(
                 map(workflowRuns => pollWorkflowsRunsSuccess({ workflowRuns })),
               ),

@@ -36,3 +36,9 @@ export const removeWorkflowNameFilter = createAction(
   props<{ filter: string }>(),
 );
 
+export const changeMaxWorkflowRunAge = createAction(
+  '[Configuration] Change Maximum Workflow Run Age',
+  props<{ age: number }>(),
+);
+
+

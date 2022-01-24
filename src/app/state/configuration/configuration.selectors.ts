@@ -33,3 +33,8 @@ export const selectWorkflowNamesFilter = createSelector(
   selectConfigurationState,
   (state: ConfigurationState) => state.filter.workflowNames,
 );
+
+export const selectMaxWorkflowRunAge = createSelector(
+  selectConfigurationState,
+  (state: ConfigurationState) => state.maxWorkflowRunAge,
+);

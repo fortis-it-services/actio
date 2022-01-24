@@ -40,7 +40,7 @@ export function createRehydrateReducer<S, A extends Action = Action>(
 
   const prefix = 'actio'
   const prefixedKey = `${prefix}.${key}`
-  const stateVersion = '1'
+  const stateVersion = '2'
 
   const item = localStorage.getItem(prefixedKey)
   const parsedItem = item && JSON.parse(item)

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { GetResponseDataTypeFromEndpointMethod } from '@octokit/types';
 import { Octokit } from 'octokit';
-import { filter, from, map, mergeAll, mergeMap, Observable, of, toArray, zipWith } from 'rxjs';
+import { filter, from, groupBy, map, max, mergeAll, mergeMap, Observable, of, toArray } from 'rxjs';
 
 const o = new Octokit();
 export type GitHubUser = GetResponseDataTypeFromEndpointMethod<typeof o.rest.users.getAuthenticated>;
@@ -13,20 +13,12 @@ export interface GitHubTeamModel {
   }
 }
 
-export interface GitHubBranchModel {
-  name: string,
-}
-
 export interface GitHubRepositoryModel {
   name: string,
   owner: {
     login: string,
   },
   archived?: boolean,
-}
-
-export interface GithubWorkflowModel {
-  id: number,
 }
 
 export interface GithubWorkflowRunModel {
@@ -62,34 +54,11 @@ export class GitHubService {
   constructor() {
   }
 
-  loadWorkflowRuns(teams: GitHubTeamModel[]): Observable<GithubWorkflowRunModel[]> {
+  loadWorkflowRuns(teams: GitHubTeamModel[], maxWorkflowRunAge: number): Observable<GithubWorkflowRunModel[]> {
     return of(teams).pipe(
       mergeAll(),
-      mergeMap(team => this.loadRepositories(team.slug, team.organization.login)),
-      mergeMap(repo => this.loadBranches(repo.owner.login, repo.name).pipe(
-        zipWith(this.loadWorkflows(repo.owner.login, repo.name)),
-        map(([branches, workflows]) =>
-          branches.flatMap(branch => workflows.map(workflow => ([branch, workflow] as const))),
-        ),
-        mergeAll(),
-        map(([branch, workflow]) => ({
-          branch: branch.name,
-          owner: repo.owner.login,
-          repo: repo.name,
-          workflow_id: workflow.id,
-        })),
-      )),
-      mergeMap(it => from(this.octokit.rest.actions.listWorkflowRuns(
-        {
-          owner: it.owner,
-          repo: it.repo,
-          workflow_id: it.workflow_id,
-          branch: it.branch,
-          per_page: 1,
-        },
-      ))),
-      map(it => it.data.workflow_runs),
-      mergeAll(),
+      mergeMap(it => this.loadRepositories(it.slug, it.organization.login)),
+      mergeMap(it => this.loadWorkflowRunsForRepo(it.owner.login, it.name, maxWorkflowRunAge)),
       toArray(),
     )
   }
@@ -130,15 +99,24 @@ export class GitHubService {
     )
   }
 
-  private loadBranches(owner: string, repo: string): Observable<GitHubBranchModel[]> {
-    return from(this.octokit.rest.repos.listBranches({ owner, repo })).pipe(
-      map(it => it.data),
-    )
-  }
+  private loadWorkflowRunsForRepo(owner: string, repo: string, maxWorkflowRunAge: number): Observable<GithubWorkflowRunModel> {
+    let date = new Date()
+    date.setDate(date.getDate() - maxWorkflowRunAge)
 
-  private loadWorkflows(owner: string, repo: string): Observable<GithubWorkflowModel[]> {
-    return from(this.octokit.rest.actions.listRepoWorkflows({ owner, repo })).pipe(
-      map(it => it.data.workflows),
+    return from(this.octokit.paginate(
+      this.octokit.rest.actions.listWorkflowRunsForRepo,
+      {
+        owner,
+        repo,
+        created: `>${date.toISOString().split('T')[0]}`,
+        per_page: 100,
+      },
+    )).pipe(
+      mergeAll(),
+      groupBy(it => `${it.workflow_id}${it.head_branch}`),
+      mergeMap(it => it.pipe(
+        max<GithubWorkflowRunModel>((a, b) => a.id - b.id),
+      )),
     )
   }
 }

@@ -5,7 +5,7 @@ import {
   changeConclusionFilter,
   changePollingInterval,
   changeStatusFilter,
-  changeTeamsFilter, removeWorkflowNameFilter,
+  changeTeamsFilter, changeMaxWorkflowRunAge, removeWorkflowNameFilter,
 } from './configuration.actions';
 import { WorkflowRunStatus } from '../../workflow-run/workflow-run-status.enum';
 import { WorkflowRunConclusion } from '../../workflow-run/workflow-run-conclusion.enum';
@@ -21,6 +21,7 @@ const initialState: ConfigurationState = {
     conclusion: Object.values(WorkflowRunConclusion),
     workflowNames: [],
   },
+  maxWorkflowRunAge: 14,
 };
 
 export const configurationReducer = createRehydrateReducer(
@@ -74,5 +75,9 @@ export const configurationReducer = createRehydrateReducer(
       conclusion: state.filter.conclusion,
       workflowNames: state.filter.workflowNames.filter(it => it !== filter),
     },
+  })),
+  on(changeMaxWorkflowRunAge, (state, { age }): ConfigurationState => ({
+    ...state,
+    maxWorkflowRunAge: age,
   })),
 );
