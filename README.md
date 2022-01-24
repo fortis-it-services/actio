@@ -10,6 +10,7 @@ Monitor your GitHub Actions workflow runs! All you need is your [PAT](#github-pe
 * Retrieve repositories by team membership
 * Display last workflow run status for every repository/branch combination
 * Filter displayed workflow runs by
+  * maximum age (default 14 days)
   * team,
   * status (e.g. queued, in progress, …) and
   * conclusion (e.g. success, failure, …)
