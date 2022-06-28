@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, map, Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { GitHubTeamModel, GitHubUser, GithubWorkflowRunModel } from './git-hub.service';
@@ -48,18 +48,18 @@ export class AppComponent {
   conclusionSelectionControlKey = 'conclusionSelectionControl'
   workflowNameSelectionControlKey = 'workflowNameSelectionControl'
 
-  tokenControl = new FormControl()
+  tokenControl = new UntypedFormControl()
 
-  settingsFormGroup = new FormGroup({
-    [this.pollingIntervalControlKey]: new FormControl(),
-    [this.maxWorkflowRunAgeControlKey]: new FormControl(),
+  settingsFormGroup = new UntypedFormGroup({
+    [this.pollingIntervalControlKey]: new UntypedFormControl(),
+    [this.maxWorkflowRunAgeControlKey]: new UntypedFormControl(),
   })
 
-  configurationFormGroup = new FormGroup({
-    [this.teamsSelectionControlKey]: new FormControl(),
-    [this.statusSelectionControlKey]: new FormControl(),
-    [this.conclusionSelectionControlKey]: new FormControl(),
-    [this.workflowNameSelectionControlKey]: new FormControl(),
+  configurationFormGroup = new UntypedFormGroup({
+    [this.teamsSelectionControlKey]: new UntypedFormControl(),
+    [this.statusSelectionControlKey]: new UntypedFormControl(),
+    [this.conclusionSelectionControlKey]: new UntypedFormControl(),
+    [this.workflowNameSelectionControlKey]: new UntypedFormControl(),
   })
 
   constructor(private store: Store) {
