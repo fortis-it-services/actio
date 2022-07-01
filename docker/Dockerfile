@@ -2,7 +2,7 @@ FROM node:lts-alpine as build
 
 WORKDIR /build
 COPY . .
-RUN npm install && \
+RUN npm ci && \
   npx ng build
 
 FROM nginx:alpine
