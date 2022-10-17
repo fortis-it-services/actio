@@ -7,8 +7,8 @@ import {
   changeStatusFilter,
   changeTeamsFilter, changeMaxWorkflowRunAge, removeWorkflowNameFilter,
 } from './configuration.actions';
-import { WorkflowRunStatus } from '../../workflow-run/workflow-run-status.enum';
-import { WorkflowRunConclusion } from '../../workflow-run/workflow-run-conclusion.enum';
+import { WorkflowRunStatus } from '../../workflow-run-status.enum';
+import { WorkflowRunConclusion } from '../../workflow-run-conclusion.enum';
 import { ConfigurationState } from './configuration-state';
 import { createRehydrateReducer } from '../app-state';
 import { configurationFeatureKey } from './configuration.selectors';

@@ -16,9 +16,6 @@ import { EffectsModule } from '@ngrx/effects';
 import { MatCardModule } from '@angular/material/card';
 import { WorkflowEffects } from './state/workflow/workflow.effects';
 import { UserEffects } from './state/user/user.effects';
-import { FlexLayoutModule } from '@angular/flex-layout';
-import { WorkflowRunComponent } from './workflow-run/workflow-run.component';
-import { WorkflowRunGridComponent } from './workflow-run-grid/workflow-run-grid.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSelectModule } from '@angular/material/select';
@@ -28,19 +25,20 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { extModules } from './build-specifics';
 import { MatChipsModule } from '@angular/material/chips';
+import { WorkflowRunTableComponent } from './workflow-run-table/workflow-run-table.component';
+import {MatTableModule} from '@angular/material/table';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
     AppComponent,
-    WorkflowRunComponent,
-    WorkflowRunGridComponent,
+    WorkflowRunTableComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
-    FlexLayoutModule,
     MatToolbarModule,
     MatIconModule,
     MatButtonModule,
@@ -62,6 +60,8 @@ import { MatChipsModule } from '@angular/material/chips';
     MatTooltipModule,
     MatChipsModule,
     extModules,
+    MatTableModule,
+    MatProgressSpinnerModule,
   ],
   providers: [MatIconRegistry],
   bootstrap: [AppComponent],

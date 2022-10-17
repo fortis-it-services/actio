@@ -13,14 +13,14 @@ import {
 } from './state/configuration/configuration.actions';
 import { selectWorkflowRuns } from './state/workflow/workflow.selectors';
 import { selectSortedUserTeams, selectUserProfile } from './state/user/user.selectors';
-import { WorkflowRunStatus } from './workflow-run/workflow-run-status.enum';
+import { WorkflowRunStatus } from './workflow-run-status.enum';
 import {
   selectConclusionFilter, selectMaxWorkflowRunAge,
   selectPollingInterval,
   selectStatusFilter,
   selectTeamsFilter, selectWorkflowNamesFilter,
 } from './state/configuration/configuration.selectors';
-import { WorkflowRunConclusion } from './workflow-run/workflow-run-conclusion.enum';
+import { WorkflowRunConclusion } from './workflow-run-conclusion.enum';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
 

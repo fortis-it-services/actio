@@ -1,4 +1,14 @@
-.container {
+#page {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+}
+
+#sidenav-container {
+  flex-grow: 1;
+}
+
+#sidenav {
   padding: 16px;
 }
 
