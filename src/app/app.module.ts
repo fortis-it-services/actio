@@ -28,11 +28,13 @@ import { MatChipsModule } from '@angular/material/chips';
 import { WorkflowRunTableComponent } from './workflow-run-table/workflow-run-table.component';
 import {MatTableModule} from '@angular/material/table';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { TimeElapsedPipe } from './time-elapsed.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     WorkflowRunTableComponent,
+    TimeElapsedPipe,
   ],
   imports: [
     BrowserModule,
