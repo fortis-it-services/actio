@@ -76,7 +76,10 @@
       </form>
     </mat-sidenav>
     <mat-sidenav-content>
-      <actio-workflow-run-table></actio-workflow-run-table>
+      <actio-workflow-run-table *ngIf="user$ | async"></actio-workflow-run-table>
+      <div class="centered" *ngIf="((user$ | async) === undefined || (user$ | async) === null) && !sidenav.opened">
+        <button mat-button mat-raised-button color="primary" (click)="sidenav.toggle()">Enter GitHub Token</button>
+      </div>
     </mat-sidenav-content>
   </mat-sidenav-container>
 </div>
