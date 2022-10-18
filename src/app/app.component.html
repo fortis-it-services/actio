@@ -10,27 +10,24 @@
 
   <mat-sidenav-container id="sidenav-container">
     <mat-sidenav mode="side" #sidenav id="sidenav">
-      <form [formGroup]="settingsFormGroup">
+      <form class="settings-form" [formGroup]="settingsFormGroup">
         <h2>Settings</h2>
         <mat-form-field appearance="outline">
           <mat-label>GitHub Token</mat-label>
           <input matInput type="password" [formControl]="tokenControl">
           <mat-icon matSuffix>key</mat-icon>
         </mat-form-field>
-        <br/>
         <mat-form-field appearance="outline">
           <mat-label>Maximum Workflow Run Age</mat-label>
           <input matInput type="number" [formControlName]="maxWorkflowRunAgeControlKey">
           <span matSuffix>&nbsp;days</span>
         </mat-form-field>
-        <br/>
         <mat-label>Polling Interval</mat-label>
-        <br/>
         <mat-slider min="10" max="60" step="1" thumbLabel="true"
                     [formControlName]="pollingIntervalControlKey">
         </mat-slider>
       </form>
-      <form [formGroup]="configurationFormGroup">
+      <form class="settings-form" [formGroup]="configurationFormGroup">
         <h2>Filter</h2>
         <span>
         <mat-form-field appearance="outline">
@@ -42,21 +39,18 @@
           </mat-select>
         </mat-form-field>
       </span>
-        <br/>
         <mat-form-field appearance="outline">
           <mat-label>Status</mat-label>
           <mat-select multiple [formControlName]="statusSelectionControlKey">
             <mat-option *ngFor="let option of workflowRunStatus" [value]="option">{{ option }}</mat-option>
           </mat-select>
         </mat-form-field>
-        <br/>
         <mat-form-field appearance="outline">
           <mat-label>Conclusion</mat-label>
           <mat-select multiple [formControlName]="conclusionSelectionControlKey">
             <mat-option *ngFor="let option of workflowRunConclusions" [value]="option">{{ option }}</mat-option>
           </mat-select>
         </mat-form-field>
-        <br/>
         <mat-form-field appearance="outline">
           <mat-label>Workflow Names</mat-label>
           <mat-chip-list #chipList aria-label="Workflow Name Selection"
