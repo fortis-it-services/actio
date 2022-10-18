@@ -36,6 +36,11 @@
     <mat-cell *matCellDef="let workflowRun">{{ workflowRun.event }}</mat-cell>
   </ng-container>
 
+  <ng-container matColumnDef="run-started-at">
+    <mat-header-cell *matHeaderCellDef>Run Started At</mat-header-cell>
+    <mat-cell *matCellDef="let workflowRun">{{ workflowRun.run_started_at | date:'medium' }}</mat-cell>
+  </ng-container>
+
   <ng-container matColumnDef="run-number">
     <mat-header-cell *matHeaderCellDef>Run Number</mat-header-cell>
     <mat-cell *matCellDef="let workflowRun">{{ workflowRun.run_number }}</mat-cell>

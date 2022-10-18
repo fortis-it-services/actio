@@ -23,6 +23,7 @@ export class WorkflowRunTableComponent {
     'head-branch',
     'name',
     'event',
+    'run-started-at',
     'run-number',
     'html-url',
   ];

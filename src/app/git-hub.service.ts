@@ -30,6 +30,7 @@ export interface GithubWorkflowRunModel {
   }
   event: string,
   run_number: number,
+  run_started_at?: string | null,
   head_branch: string | null,
   status: string | null,
   conclusion: string | null,
