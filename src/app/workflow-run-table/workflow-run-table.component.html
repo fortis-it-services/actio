@@ -21,16 +21,6 @@
     <mat-cell *matCellDef="let workflowRun">{{ workflowRun.repository.full_name }}</mat-cell>
   </ng-container>
 
-  <ng-container matColumnDef="event">
-    <mat-header-cell *matHeaderCellDef>Event</mat-header-cell>
-    <mat-cell *matCellDef="let workflowRun">{{ workflowRun.event }}</mat-cell>
-  </ng-container>
-
-  <ng-container matColumnDef="run-number">
-    <mat-header-cell *matHeaderCellDef>Run Number</mat-header-cell>
-    <mat-cell *matCellDef="let workflowRun">{{ workflowRun.run_number }}</mat-cell>
-  </ng-container>
-
   <ng-container matColumnDef="head-branch">
     <mat-header-cell *matHeaderCellDef>Branch</mat-header-cell>
     <mat-cell *matCellDef="let workflowRun">{{ workflowRun.head_branch }}</mat-cell>
@@ -39,6 +29,16 @@
   <ng-container matColumnDef="name">
     <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
     <mat-cell *matCellDef="let workflowRun">{{ workflowRun.name }}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="event">
+    <mat-header-cell *matHeaderCellDef>Event</mat-header-cell>
+    <mat-cell *matCellDef="let workflowRun">{{ workflowRun.event }}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="run-number">
+    <mat-header-cell *matHeaderCellDef>Run Number</mat-header-cell>
+    <mat-cell *matCellDef="let workflowRun">{{ workflowRun.run_number }}</mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="html-url">

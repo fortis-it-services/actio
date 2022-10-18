@@ -20,10 +20,10 @@ export class WorkflowRunTableComponent {
   columnsToDisplay: Array<string> = [
     'status',
     'repository',
-    'event',
-    'run-number',
     'head-branch',
     'name',
+    'event',
+    'run-number',
     'html-url',
   ];
 
