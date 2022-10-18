@@ -16,14 +16,9 @@
     </mat-cell>
   </ng-container>
 
-  <ng-container matColumnDef="repository-owner">
-    <mat-header-cell *matHeaderCellDef>Repository Owner</mat-header-cell>
-    <mat-cell *matCellDef="let workflowRun">{{ workflowRun.repository.owner.login }}</mat-cell>
-  </ng-container>
-
-  <ng-container matColumnDef="repository-name">
-    <mat-header-cell *matHeaderCellDef>Repository Name</mat-header-cell>
-    <mat-cell *matCellDef="let workflowRun">{{ workflowRun.repository.name }}</mat-cell>
+  <ng-container matColumnDef="repository">
+    <mat-header-cell *matHeaderCellDef>Repository</mat-header-cell>
+    <mat-cell *matCellDef="let workflowRun">{{ workflowRun.repository.full_name }}</mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="event">

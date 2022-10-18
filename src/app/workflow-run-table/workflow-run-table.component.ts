@@ -19,8 +19,7 @@ export class WorkflowRunTableComponent {
 
   columnsToDisplay: Array<string> = [
     'status',
-    'repository-owner',
-    'repository-name',
+    'repository',
     'event',
     'run-number',
     'head-branch',

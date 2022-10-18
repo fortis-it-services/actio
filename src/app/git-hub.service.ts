@@ -26,10 +26,7 @@ export interface GithubWorkflowRunModel {
   name?: string | null,
   workflow_id: number,
   repository: {
-    name: string,
-    owner: {
-      login: string
-    }
+    full_name: string,
   }
   event: string,
   run_number: number,
