@@ -56,7 +56,7 @@
     </mat-cell>
   </ng-container>
 
-  <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+  <mat-header-row *matHeaderRowDef="columnsToDisplay; sticky: true"></mat-header-row>
   <mat-row
     *matRowDef="let workflowRun; columns: columnsToDisplay"
     [class.neutral]="workflowRun.conclusion === conclusion.CANCELLED"
