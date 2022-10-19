@@ -1,7 +1,7 @@
-<mat-table [dataSource]="workflowRuns$">
+<table mat-table [dataSource]="workflowRuns$">
   <ng-container matColumnDef="status">
-    <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
-    <mat-cell *matCellDef="let workflowRun">
+    <th mat-header-cell *matHeaderCellDef>Status</th>
+    <td mat-cell *matCellDef="let workflowRun">
       <mat-icon mat-card-avatar matTooltip="Queued" *ngIf="workflowRun.status === status.QUEUED">dynamic_feed</mat-icon>
       <mat-progress-spinner mode="indeterminate" diameter="24"
                             *ngIf="workflowRun.status === status.IN_PROGRESS"></mat-progress-spinner>
@@ -13,54 +13,54 @@
       </mat-icon>
       <mat-icon mat-card-avatar matTooltip="Cancelled" *ngIf="workflowRun.conclusion === conclusion.CANCELLED">error
       </mat-icon>
-    </mat-cell>
+    </td>
   </ng-container>
 
   <ng-container matColumnDef="repository">
-    <mat-header-cell *matHeaderCellDef>Repository</mat-header-cell>
-    <mat-cell *matCellDef="let workflowRun">{{ workflowRun.repository.full_name }}</mat-cell>
+    <th mat-header-cell *matHeaderCellDef>Repository</th>
+    <td mat-cell *matCellDef="let workflowRun">{{ workflowRun.repository.full_name }}</td>
   </ng-container>
 
   <ng-container matColumnDef="head-branch">
-    <mat-header-cell *matHeaderCellDef>Branch</mat-header-cell>
-    <mat-cell *matCellDef="let workflowRun">{{ workflowRun.head_branch }}</mat-cell>
+    <th mat-header-cell *matHeaderCellDef>Branch</th>
+    <td mat-cell *matCellDef="let workflowRun">{{ workflowRun.head_branch }}</td>
   </ng-container>
 
   <ng-container matColumnDef="name">
-    <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
-    <mat-cell *matCellDef="let workflowRun">{{ workflowRun.name }}</mat-cell>
+    <th mat-header-cell *matHeaderCellDef>Name</th>
+    <td mat-cell *matCellDef="let workflowRun">{{ workflowRun.name }}</td>
   </ng-container>
 
   <ng-container matColumnDef="event">
-    <mat-header-cell *matHeaderCellDef>Event</mat-header-cell>
-    <mat-cell *matCellDef="let workflowRun">{{ workflowRun.event }}</mat-cell>
+    <th mat-header-cell *matHeaderCellDef>Event</th>
+    <td mat-cell *matCellDef="let workflowRun">{{ workflowRun.event }}</td>
   </ng-container>
 
   <ng-container matColumnDef="run-started-at">
-    <mat-header-cell *matHeaderCellDef>Run Started At</mat-header-cell>
-    <mat-cell *matCellDef="let workflowRun">{{ workflowRun.run_started_at | date:'medium' }}</mat-cell>
+    <th mat-header-cell *matHeaderCellDef>Run Started At</th>
+    <td mat-cell *matCellDef="let workflowRun">{{ workflowRun.run_started_at | date:'medium' }}</td>
   </ng-container>
 
   <ng-container matColumnDef="run-number">
-    <mat-header-cell *matHeaderCellDef>Run Number</mat-header-cell>
-    <mat-cell *matCellDef="let workflowRun">{{ workflowRun.run_number }}</mat-cell>
+    <th mat-header-cell *matHeaderCellDef>Run Number</th>
+    <td mat-cell *matCellDef="let workflowRun">{{ workflowRun.run_number }}</td>
   </ng-container>
 
   <ng-container matColumnDef="html-url">
-    <mat-header-cell *matHeaderCellDef>Link</mat-header-cell>
-    <mat-cell *matCellDef="let workflowRun">
+    <th mat-header-cell *matHeaderCellDef>Link</th>
+    <td mat-cell *matCellDef="let workflowRun">
       <a mat-icon-button matTooltip="GitHub Workflow Run" [href]="workflowRun.html_url" target="_blank"
          class="material-icons">
         <mat-icon inline=true svgIcon="github" class="brand-icon"></mat-icon>
       </a>
-    </mat-cell>
+    </td>
   </ng-container>
 
-  <mat-header-row *matHeaderRowDef="columnsToDisplay; sticky: true"></mat-header-row>
-  <mat-row
-    *matRowDef="let workflowRun; columns: columnsToDisplay"
-    [class.neutral]="workflowRun.conclusion === conclusion.CANCELLED"
-    [class.failure]="workflowRun.conclusion === conclusion.FAILURE"
-    [class.in-progress]="workflowRun.status === status.IN_PROGRESS || workflowRun.status === status.QUEUED">
-  </mat-row>
-</mat-table>
+  <tr mat-header-row *matHeaderRowDef="columnsToDisplay; sticky: true"></tr>
+  <tr mat-row
+      *matRowDef="let workflowRun; columns: columnsToDisplay"
+      [class.neutral]="workflowRun.conclusion === conclusion.CANCELLED"
+      [class.failure]="workflowRun.conclusion === conclusion.FAILURE"
+      [class.in-progress]="workflowRun.status === status.IN_PROGRESS || workflowRun.status === status.QUEUED">
+  </tr>
+</table>
