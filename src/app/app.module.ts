@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import {LOCALE_ID, NgModule} from '@angular/core';
 import { BrowserModule, DomSanitizer } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -28,6 +28,15 @@ import { MatChipsModule } from '@angular/material/chips';
 import { WorkflowRunTableComponent } from './workflow-run-table/workflow-run-table.component';
 import {MatTableModule} from '@angular/material/table';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {SettingsService} from './settings.service';
+import {registerLocaleData} from '@angular/common';
+import de from '@angular/common/locales/de';
+import en from '@angular/common/locales/en';
+import fr from '@angular/common/locales/fr';
+
+registerLocaleData(de);
+registerLocaleData(en);
+registerLocaleData(fr);
 
 @NgModule({
   declarations: [
@@ -63,7 +72,14 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     MatTableModule,
     MatProgressSpinnerModule,
   ],
-  providers: [MatIconRegistry],
+  providers: [
+    {
+      provide: LOCALE_ID,
+      deps: [SettingsService],
+      useFactory: (settingsService: SettingsService) => settingsService.userLanguage(),
+    },
+    MatIconRegistry,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {
