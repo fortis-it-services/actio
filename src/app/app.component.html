@@ -9,7 +9,7 @@
   </mat-toolbar>
 
   <mat-sidenav-container id="sidenav-container">
-    <mat-sidenav mode="side" #sidenav id="sidenav">
+    <mat-sidenav mode="side" #sidenav id="sidenav" [autoFocus]="true">
       <form class="settings-form" [formGroup]="settingsFormGroup">
         <span id="settings">
           <h2>Settings</h2>
@@ -19,7 +19,7 @@
         </span>
         <mat-form-field appearance="outline">
           <mat-label>GitHub Token</mat-label>
-          <input matInput type="password" [formControl]="tokenControl">
+          <input cdkFocusInitial matInput type="password" [formControl]="tokenControl">
           <mat-icon matSuffix>key</mat-icon>
         </mat-form-field>
         <mat-form-field appearance="outline">
