@@ -21,12 +21,12 @@ export const selectConclusionFilter = createSelector(
 
 export const selectPollingInterval = createSelector(
   selectConfigurationState,
-  (state: ConfigurationState) => state.pollingInterval || 30,
+  (state: ConfigurationState) => state.polling.pollingInterval || 30,
 );
 
 export const selectPollingIntervalInMillis = createSelector(
   selectConfigurationState,
-  (state: ConfigurationState) => (state.pollingInterval || 30) * 1000,
+  (state: ConfigurationState) => (state.polling.pollingInterval || 30) * 1000,
 );
 
 export const selectWorkflowNamesFilter = createSelector(

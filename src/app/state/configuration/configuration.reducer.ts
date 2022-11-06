@@ -1,20 +1,28 @@
-import { on } from '@ngrx/store';
+import {on} from '@ngrx/store';
 
 import {
   addWorkflowNameFilter,
   changeConclusionFilter,
   changePollingInterval,
   changeStatusFilter,
-  changeTeamsFilter, changeMaxWorkflowRunAge, removeWorkflowNameFilter,
+  changeTeamsFilter,
+  changeMaxWorkflowRunAge,
+  removeWorkflowNameFilter,
 } from './configuration.actions';
 import { WorkflowRunStatus } from '../../workflow-run-status.enum';
 import { WorkflowRunConclusion } from '../../workflow-run-conclusion.enum';
 import { ConfigurationState } from './configuration-state';
 import { createRehydrateReducer } from '../app-state';
 import { configurationFeatureKey } from './configuration.selectors';
+import {pollingStarted, pollWorkflowsRunsSuccess, updatePolling} from '../workflow/workflow.actions';
 
 const initialState: ConfigurationState = {
-  pollingInterval: 30,
+  polling: {
+    pollingInterval: 30,
+    isPolling: false,
+    lastPollStarted: null,
+    nextPollPercentage: 0,
+  },
   filter: {
     teams: [],
     status: Object.values(WorkflowRunStatus),
@@ -56,7 +64,12 @@ export const configurationReducer = createRehydrateReducer(
   })),
   on(changePollingInterval, (state, { interval }): ConfigurationState => ({
     ...state,
-    pollingInterval: interval ?? initialState.pollingInterval,
+    polling: {
+      pollingInterval: interval ?? initialState.polling.pollingInterval,
+      isPolling: state.polling.isPolling,
+      lastPollStarted: state.polling.lastPollStarted,
+      nextPollPercentage: state.polling.nextPollPercentage,
+    },
   })),
   on(addWorkflowNameFilter, (state, { filter }): ConfigurationState => ({
     ...state,
@@ -79,5 +92,33 @@ export const configurationReducer = createRehydrateReducer(
   on(changeMaxWorkflowRunAge, (state, { age }): ConfigurationState => ({
     ...state,
     maxWorkflowRunAge: age,
+  })),
+  on(pollingStarted, (state): ConfigurationState => ({
+    ...state,
+    polling: {
+      pollingInterval: state.polling.pollingInterval,
+      isPolling: true,
+      lastPollStarted: new Date(),
+      nextPollPercentage: state.polling.nextPollPercentage,
+    },
+  })),
+  on(pollWorkflowsRunsSuccess, (state): ConfigurationState => ({
+    ...state,
+    polling: {
+      pollingInterval: state.polling.pollingInterval,
+      isPolling: false,
+      lastPollStarted: state.polling.lastPollStarted,
+      nextPollPercentage: state.polling.nextPollPercentage,
+    },
+  })),
+  on(updatePolling, (state, {interval}): ConfigurationState => ({
+    ...state,
+    polling: {
+      pollingInterval: state.polling.pollingInterval,
+      isPolling: state.polling.isPolling,
+      lastPollStarted: state.polling.lastPollStarted,
+      nextPollPercentage: state.polling.lastPollStarted ?
+        ((new Date().getTime() - state.polling.lastPollStarted.getTime()) / interval) * 100 : 0,
+    },
   })),
 );

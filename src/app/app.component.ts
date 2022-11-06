@@ -2,20 +2,24 @@ import { Component } from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import { debounceTime, distinctUntilChanged, map, Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { GitHubTeamModel, GitHubUser, GithubWorkflowRunModel } from './git-hub.service';
+import { GitHubRateLimitModel, GitHubTeamModel, GitHubUser, GithubWorkflowRunModel } from './git-hub.service';
 import {
   addWorkflowNameFilter,
-  changeConclusionFilter, changeMaxWorkflowRunAge,
+  changeConclusionFilter,
+  changeMaxWorkflowRunAge,
   changePollingInterval,
   changeStatusFilter,
   changeTeamsFilter,
-  changeToken, removeWorkflowNameFilter,
+  changeToken,
+  removeWorkflowNameFilter,
 } from './state/configuration/configuration.actions';
 import { selectWorkflowRuns } from './state/workflow/workflow.selectors';
-import { selectSortedUserTeams, selectUserProfile } from './state/user/user.selectors';
+import { selectRateLimits, selectSortedUserTeams, selectUserProfile } from './state/user/user.selectors';
 import { WorkflowRunStatus } from './workflow-run-status.enum';
 import {
-  selectConclusionFilter, selectMaxWorkflowRunAge,
+  selectConclusionFilter,
+  selectConfigurationState,
+  selectMaxWorkflowRunAge,
   selectPollingInterval,
   selectStatusFilter,
   selectTeamsFilter, selectWorkflowNamesFilter,
@@ -23,6 +27,7 @@ import {
 import { WorkflowRunConclusion } from './workflow-run-conclusion.enum';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
+import {ConfigurationState} from './state/configuration/configuration-state';
 
 @Component({
   selector: 'actio-root',
@@ -37,9 +42,11 @@ export class AppComponent {
   chipSeparatorKeysCodes: number[] = [ENTER, COMMA]
 
   user$: Observable<GitHubUser | null>
+  rateLimits$: Observable<GitHubRateLimitModel>
   teams$: Observable<GitHubTeamModel[]>
   workflowRuns$: Observable<GithubWorkflowRunModel[]>
   workflowNamesFilter$: Observable<string[]>
+  configurationState$: Observable<ConfigurationState>
 
   pollingIntervalControlKey = 'pollingIntervalControl'
   maxWorkflowRunAgeControlKey = 'workflowRunHistoryControl'
@@ -64,9 +71,11 @@ export class AppComponent {
 
   constructor(private store: Store) {
     this.user$ = store.select(selectUserProfile)
+    this.rateLimits$ = store.select(selectRateLimits)
     this.teams$ = store.select(selectSortedUserTeams)
     this.workflowRuns$ = store.select(selectWorkflowRuns)
     this.workflowNamesFilter$ = store.select(selectWorkflowNamesFilter)
+    this.configurationState$ = store.select(selectConfigurationState)
 
     this.enableConfigurationFormGroupAfterLogin()
 

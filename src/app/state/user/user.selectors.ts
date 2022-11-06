@@ -16,6 +16,11 @@ export const selectUserTeams = createSelector(
   (state: UserState) => state.teams,
 )
 
+export const selectRateLimits = createSelector(
+  selectUserFeature,
+  (state: UserState) => state.rateLimits,
+)
+
 export const selectSortedUserTeams = createSelector(
   selectUserFeature,
   (state: UserState) => [...state.teams]

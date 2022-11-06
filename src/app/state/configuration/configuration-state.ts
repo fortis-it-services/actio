@@ -1,7 +1,12 @@
 import { GitHubTeamModel } from '../../git-hub.service';
 
 export interface ConfigurationState {
-  pollingInterval: number,
+  polling: {
+    pollingInterval: number,
+    isPolling: boolean,
+    lastPollStarted: Date | null,
+    nextPollPercentage: number,
+  }
   filter: {
     conclusion: string[],
     status: string[],

@@ -82,4 +82,25 @@
       </div>
     </mat-sidenav-content>
   </mat-sidenav-container>
+  <mat-toolbar *ngIf="user$ | async as user" color="secondary" id="footer">
+    <ng-container *ngIf="rateLimits$ | async as rateLimit">
+      <mat-icon *ngIf="rateLimit.rate.remaining / rateLimit.rate.limit > 0.2"
+                matTooltip="Rate limits: {{rateLimit.rate.remaining}} of {{rateLimit.rate.limit}} request remaining.">
+                info
+      </mat-icon>
+      <mat-icon *ngIf="rateLimit.rate.remaining !== 0 && rateLimit.rate.remaining / rateLimit.rate.limit <= 0.2"
+                matTooltip="Rate limit exhausting. {{rateLimit.rate.remaining}} of {{rateLimit.rate.limit}} request remaining."
+                class="icon-warning">warning
+      </mat-icon>
+      <mat-icon *ngIf="rateLimit.rate.remaining === 0"
+                matTooltip="Rate limit exhausted. {{rateLimit.rate.remaining}} of {{rateLimit.rate.limit}} request remaining."
+                class="icon-failure">warning
+      </mat-icon>
+    </ng-container>
+    <mat-progress-bar
+      *ngIf="configurationState$ | async as configuration"
+      [mode]="configuration.polling.isPolling ? 'indeterminate' : 'determinate'"
+      [value]="configuration.polling.nextPollPercentage"
+    ></mat-progress-bar>
+  </mat-toolbar>
 </div>
