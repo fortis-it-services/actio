@@ -4,6 +4,10 @@
   flex-direction: column;
 }
 
+#toolbar {
+  min-height: 60px;
+}
+
 #sidenav-container {
   flex-grow: 1;
 }
