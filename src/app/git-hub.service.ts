@@ -26,7 +26,11 @@ export interface GithubWorkflowRunModel {
   name?: string | null,
   workflow_id: number,
   repository: {
+    name: string,
     full_name: string,
+    owner: {
+      login: string,
+    }
   }
   event: string,
   run_number: number,
@@ -35,6 +39,31 @@ export interface GithubWorkflowRunModel {
   status: string | null,
   conclusion: string | null,
   html_url: string,
+  actor?: {
+    login: string,
+    type: string,
+    avatar_url: string,
+    html_url: string,
+  },
+  triggering_actor?: {
+    login: string,
+    type: string,
+    avatar_url: string,
+    html_url: string,
+  },
+  head_commit: {
+    id: string,
+    message: string,
+    timestamp?: string | null,
+    author: {
+      name: string,
+      email: string,
+    } | null,
+    committer: {
+      name: string,
+      email: string,
+    } | null,
+  } | null
 }
 
 export interface GitHubRateLimitModel {

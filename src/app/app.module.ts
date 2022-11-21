@@ -33,6 +33,10 @@ import {registerLocaleData} from '@angular/common';
 import de from '@angular/common/locales/de';
 import en from '@angular/common/locales/en';
 import fr from '@angular/common/locales/fr';
+import {MatListModule} from '@angular/material/list';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {WorkflowRunDetailsComponent} from './workflow-run-details/workflow-run-details.component';
+import {MatTabsModule} from '@angular/material/tabs';
 
 registerLocaleData(de);
 registerLocaleData(en);
@@ -42,6 +46,7 @@ registerLocaleData(fr);
   declarations: [
     AppComponent,
     WorkflowRunTableComponent,
+    WorkflowRunDetailsComponent,
   ],
   imports: [
     BrowserModule,
@@ -71,6 +76,9 @@ registerLocaleData(fr);
     extModules,
     MatTableModule,
     MatProgressSpinnerModule,
+    MatListModule,
+    MatExpansionModule,
+    MatTabsModule,
   ],
   providers: [
     {

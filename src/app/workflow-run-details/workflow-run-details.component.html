@@ -1,0 +1,29 @@
+<div class="workflow-run-detail-container">
+  <mat-tab-group>
+    <mat-tab label="Latest Commit">
+      <ng-template mat-tab-label>
+        <mat-icon class="label-icon">playlist_add_check</mat-icon>
+        Latest Commit
+      </ng-template>
+      <mat-list>
+        <mat-list-item>
+          <mat-icon mat-list-icon matTooltip="Author">account_circle</mat-icon>
+          <div mat-line>{{workflowRun.head_commit?.author?.name}}</div>
+          <div mat-line>{{workflowRun.head_commit?.author?.email}}</div>
+        </mat-list-item>
+        <mat-list-item>
+          <mat-icon mat-list-icon matTooltip="Committed at">access_time</mat-icon>
+          <div mat-line>{{workflowRun.head_commit?.timestamp | date:'medium'}}</div>
+        </mat-list-item>
+        <mat-list-item>
+          <mat-icon mat-list-icon matTooltip="Commit message">message</mat-icon>
+          <!--                  hack to add class mat-multi-line to mat-list-item :(-->
+          <div mat-line></div>
+          <div mat-line></div>
+          <div mat-line></div>
+          <div mat-line class="pre-wrap">{{workflowRun.head_commit?.message}}</div>
+        </mat-list-item>
+      </mat-list>
+    </mat-tab>
+  </mat-tab-group>
+</div>

@@ -1,4 +1,4 @@
-<table mat-table [dataSource]="workflowRuns$">
+<table mat-table [dataSource]="workflowRuns$" multiTemplateDataRows>
   <ng-container matColumnDef="status">
     <th mat-header-cell *matHeaderCellDef>Status</th>
     <td mat-cell *matCellDef="let workflowRun">
@@ -50,9 +50,27 @@
     <th mat-header-cell *matHeaderCellDef>Link</th>
     <td mat-cell *matCellDef="let workflowRun">
       <a mat-icon-button matTooltip="GitHub Workflow Run" [href]="workflowRun.html_url" target="_blank"
-         class="material-icons">
+         (click)="$event.stopPropagation()" class="material-icons">
         <mat-icon inline=true svgIcon="github" class="brand-icon"></mat-icon>
       </a>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="expander">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let workflowRun">
+      <mat-icon *ngIf="!isExpandedWorkflowRun(workflowRun)">keyboard_arrow_down</mat-icon>
+      <mat-icon *ngIf="isExpandedWorkflowRun(workflowRun)">keyboard_arrow_up</mat-icon>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="expandedWorkflowRun">
+    <td mat-cell *matCellDef="let workflowRun" [attr.colspan]="columnsToDisplay.length">
+      <div class="workflow-run-detail"
+           [@detailExpand]="isExpandedWorkflowRun(workflowRun) ? 'expanded' : 'collapsed'">
+        <actio-workflow-run-details *ngIf="isExpandedWorkflowRun(workflowRun)" [workflowRun]="workflowRun">
+        </actio-workflow-run-details>
+      </div>
     </td>
   </ng-container>
 
@@ -61,6 +79,9 @@
       *matRowDef="let workflowRun; columns: columnsToDisplay"
       [class.neutral]="workflowRun.conclusion === conclusion.CANCELLED"
       [class.failure]="workflowRun.conclusion === conclusion.FAILURE"
-      [class.in-progress]="workflowRun.status === status.IN_PROGRESS || workflowRun.status === status.QUEUED">
+      [class.in-progress]="workflowRun.status === status.IN_PROGRESS || workflowRun.status === status.QUEUED"
+      (click)="toggleExpandedWorkflowRun(workflowRun)"
+      class="workflow-run-row">
   </tr>
+  <tr mat-row *matRowDef="let workflowRun; columns: ['expandedWorkflowRun']" class="workflow-run-detail-row"></tr>
 </table>

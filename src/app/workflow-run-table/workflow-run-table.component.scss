@@ -2,28 +2,20 @@ table {
   width: 100%;
 }
 
-.in-progress {
-  background-color: #f0f5fc;
+.workflow-run-detail {
+  overflow: hidden;
 }
 
-.failure {
-  background-color: #f8e5e5;
+.workflow-run-detail-row {
+  height: 0;
 }
 
-.neutral {
-  background-color: #e8e8e8;
+.workflow-run-row td {
+  border-bottom-width: 0;
 }
 
-.icon-success {
-  color: #339900;
+.workflow-run-row:hover {
+  cursor: pointer;
+  filter: brightness(95%);
 }
 
-.icon-failure {
-  color: #cc3300;
-}
-
-.brand-icon {
-  width: 24px;
-  height: 24px;
-  line-height: 24px;
-}
