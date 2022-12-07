@@ -26,7 +26,7 @@ import {
 } from './state/configuration/configuration.selectors';
 import { WorkflowRunConclusion } from './workflow-run-conclusion.enum';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { MatChipInputEvent } from '@angular/material/chips';
+import { MatLegacyChipInputEvent as MatChipInputEvent } from '@angular/material/legacy-chips';
 import {ConfigurationState} from './state/configuration/configuration-state';
 
 @Component({
