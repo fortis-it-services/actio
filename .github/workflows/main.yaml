@@ -24,6 +24,12 @@ jobs:
       - name: "Test"
         run: npx ng test --watch=false --browsers=ChromeHeadless
 
+      - name: "E2E Test"
+        uses: cypress-io/github-action@v5.1.0
+        with:
+          build: npx ng build
+          start: npx ng serve
+
       - name: "Build"
         run: npx ng build
 
