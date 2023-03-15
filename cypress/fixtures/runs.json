@@ -1,0 +1,133 @@
+{
+  "total_count": 0,
+  "workflow_runs": [
+    {
+      "id": 3,
+      "name": "WorkflowA",
+      "workflow_id": 1,
+      "repository": {
+        "name": "repoA",
+        "full_name": "teamA/repoA",
+        "owner": {
+          "login": "fortis-it-services"
+        }
+      },
+      "event": "push",
+      "run_number": 125,
+      "run_started_at": "2020-01-22T22:30:08Z",
+      "head_branch": "stage/dirk",
+      "status": "in_progress",
+      "conclusion": "neutral",
+      "html_url": "https://fortis-it.de",
+      "head_commit": {
+        "id": "asfs98aue8fas",
+        "message": "revert: do not wipe database when adding new entry",
+        "timestamp": "2020-01-22T22:29:12Z",
+        "author": {
+          "name": "Dirk Mustermaennchen",
+          "email": "dirk.mustermaennchen@fortis-it.de"
+        },
+        "comitter": {
+          "name": "Dirk Mustermaennchen",
+          "email": "dirk.mustermaenchen@fortis-it.de"
+        }
+      }
+    },
+    {
+      "id": 2,
+      "name": "WorkflowA",
+      "workflow_id": 1,
+      "repository": {
+        "name": "repoA",
+        "full_name": "teamA/repoA",
+        "owner": {
+          "login": "fortis-it-services"
+        }
+      },
+      "event": "workflow_dispatch",
+      "run_number": 124,
+      "run_started_at": "2020-01-22T22:17:59Z",
+      "head_branch": "main",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://fortis-it.de",
+      "head_commit": {
+        "id": "j98fw9e8j",
+        "message": "fix: do not wipe database when adding new entry",
+        "timestamp": "2020-01-22T19:32:12Z",
+        "author": {
+          "name": "Max Mustermann",
+          "email": "max.mustermann@fortis-it.de"
+        },
+        "comitter": {
+          "name": "Max Mustermann",
+          "email": "max.mustermann@fortis-it.de"
+        }
+      }
+    },
+    {
+      "id": 1,
+      "name": "WorkflowA",
+      "workflow_id": 1,
+      "repository": {
+        "name": "repoA",
+        "full_name": "teamA/repoA",
+        "owner": {
+          "login": "fortis-it-services"
+        }
+      },
+      "event": "push",
+      "run_number": 123,
+      "run_started_at": "2020-01-22T19:33:27Z",
+      "head_branch": "stage/max",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://fortis-it.de",
+      "head_commit": {
+        "id": "j98fw9e8j",
+        "message": "fix: do not wipe database when adding new entry",
+        "timestamp": "2020-01-22T19:32:12Z",
+        "author": {
+          "name": "Max Mustermann",
+          "email": "max.mustermann@fortis-it.de"
+        },
+        "comitter": {
+          "name": "Max Mustermann",
+          "email": "max.mustermann@fortis-it.de"
+        }
+      }
+    },
+    {
+      "id": 0,
+      "name": "WorkflowB",
+      "workflow_id": 2,
+      "repository": {
+        "name": "repoA",
+        "full_name": "teamA/repoA",
+        "owner": {
+          "login": "fortis-it-services"
+        }
+      },
+      "event": "workflow_dispatch",
+      "run_number": 2,
+      "run_started_at": "2020-01-22T18:11:34Z",
+      "head_branch": "stage/max",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://fortis-it.de",
+      "head_commit": {
+        "id": "asefasf09d8sf",
+        "message": "build: upgrade version to 2.5",
+        "timestamp": "2020-01-22T17:07:01Z",
+        "author": {
+          "name": "Max Mustermann",
+          "email": "max.mustermann@fortis-it.de"
+        },
+        "comitter": {
+          "name": "Max Mustermann",
+          "email": "max.mustermann@fortis-it.de"
+        }
+      }
+    }
+  ]
+}

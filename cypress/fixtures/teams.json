@@ -1,0 +1,20 @@
+[
+  {
+    "slug": "teamA",
+    "organization": {
+      "login": "fortis-it-services"
+    }
+  },
+  {
+    "slug": "teamB",
+    "organization": {
+      "login": "fortis-it-services"
+    }
+  },
+  {
+    "slug": "teamC",
+    "organization": {
+      "login": "fortis-it-services"
+    }
+  }
+]
