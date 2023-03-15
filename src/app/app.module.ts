@@ -37,6 +37,7 @@ import {MatListModule} from '@angular/material/list';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {WorkflowRunDetailsComponent} from './workflow-run-details/workflow-run-details.component';
 import {MatTabsModule} from '@angular/material/tabs';
+import {WorkflowRunStatusIconComponent} from './workflow-run-table/workflow-run-status-icon/workflow-run-status-icon.component';
 
 registerLocaleData(de);
 registerLocaleData(en);
@@ -47,6 +48,7 @@ registerLocaleData(fr);
     AppComponent,
     WorkflowRunTableComponent,
     WorkflowRunDetailsComponent,
+    WorkflowRunStatusIconComponent,
   ],
   imports: [
     BrowserModule,

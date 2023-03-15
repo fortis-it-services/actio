@@ -1,0 +1,24 @@
+<mat-icon mat-card-avatar matTooltip="Queued" *ngIf="workflowRun.status === status.QUEUED">
+  dynamic_feed
+</mat-icon>
+
+<mat-progress-spinner mode="indeterminate" diameter="24" *ngIf="workflowRun.status === status.IN_PROGRESS">
+</mat-progress-spinner>
+
+<mat-icon mat-card-avatar matTooltip="Success" class="icon-success"
+          *ngIf="workflowRun.conclusion === conclusion.SUCCESS">
+  check_circle
+</mat-icon>
+
+<mat-icon mat-card-avatar matTooltip="Failure" class="icon-failure"
+          *ngIf="workflowRun.conclusion === conclusion.FAILURE">
+  cancel
+</mat-icon>
+
+<mat-icon mat-card-avatar matTooltip="Cancelled" *ngIf="workflowRun.conclusion === conclusion.CANCELLED">
+  error
+</mat-icon>
+
+<mat-icon mat-card-avatar matTooltip="Skipped" *ngIf="workflowRun.conclusion === conclusion.SKIPPED">
+  skip_next
+</mat-icon>
