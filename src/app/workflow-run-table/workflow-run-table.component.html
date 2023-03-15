@@ -13,6 +13,8 @@
       </mat-icon>
       <mat-icon mat-card-avatar matTooltip="Cancelled" *ngIf="workflowRun.conclusion === conclusion.CANCELLED">error
       </mat-icon>
+      <mat-icon mat-card-avatar matTooltip="Skipped" *ngIf="workflowRun.conclusion === conclusion.SKIPPED">skip_next
+      </mat-icon>
     </td>
   </ng-container>
 

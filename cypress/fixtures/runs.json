@@ -1,8 +1,8 @@
 {
-  "total_count": 0,
+  "total_count": 5,
   "workflow_runs": [
     {
-      "id": 3,
+      "id": 4,
       "name": "WorkflowA",
       "workflow_id": 1,
       "repository": {
@@ -13,7 +13,7 @@
         }
       },
       "event": "push",
-      "run_number": 125,
+      "run_number": 126,
       "run_started_at": "2020-01-22T22:30:08Z",
       "head_branch": "stage/dirk",
       "status": "in_progress",
@@ -23,6 +23,38 @@
         "id": "asfs98aue8fas",
         "message": "revert: do not wipe database when adding new entry",
         "timestamp": "2020-01-22T22:29:12Z",
+        "author": {
+          "name": "Dirk Mustermaennchen",
+          "email": "dirk.mustermaennchen@fortis-it.de"
+        },
+        "comitter": {
+          "name": "Dirk Mustermaennchen",
+          "email": "dirk.mustermaenchen@fortis-it.de"
+        }
+      }
+    },
+    {
+      "id": 3,
+      "name": "WorkflowC",
+      "workflow_id": 3,
+      "repository": {
+        "name": "repoA",
+        "full_name": "teamA/repoA",
+        "owner": {
+          "login": "fortis-it-services"
+        }
+      },
+      "event": "push",
+      "run_number": 125,
+      "run_started_at": "2020-01-22T21:49:52Z",
+      "head_branch": "stage/dirk",
+      "status": "completed",
+      "conclusion": "skipped",
+      "html_url": "https://fortis-it.de",
+      "head_commit": {
+        "id": "asfs98ffewaue8fas",
+        "message": "feat: add another cool feature",
+        "timestamp": "2020-01-22T21:49:52Z",
         "author": {
           "name": "Dirk Mustermaennchen",
           "email": "dirk.mustermaennchen@fortis-it.de"

@@ -51,23 +51,27 @@ describe('Given a team, some repos and workflow runs', () => {
     cy.get('.cdk-overlay-backdrop').click();
     cy.get('.mat-icon').contains('close').click();
 
-    cy.get('.workflow-run-row').should('have.length', 4);
+    cy.get('.workflow-run-row').should('have.length', 5);
 
     let expectedFirstWorkflowRun =
-      ['teamA/repoA', 'stage/dirk', 'WorkflowA', 'push', '125'];
+      ['teamA/repoA', 'stage/dirk', 'WorkflowA', 'push', '126'];
     expectedFirstWorkflowRun.forEach(x => cy.get('.workflow-run-row').eq(0).contains(x));
 
     let expectedSecondWorkflowRun =
-      ['teamA/repoA', 'main', 'WorkflowA', 'workflow_dispatch', '124'];
+      ['teamA/repoA', 'stage/dirk', 'WorkflowC', 'push', '125'];
     expectedSecondWorkflowRun.forEach(x => cy.get('.workflow-run-row').eq(1).contains(x));
 
     let expectedThirdWorkflowRun =
-      ['teamA/repoA', 'stage/max', 'WorkflowA', 'push', '123'];
+      ['teamA/repoA', 'main', 'WorkflowA', 'workflow_dispatch', '124'];
     expectedThirdWorkflowRun.forEach(x => cy.get('.workflow-run-row').eq(2).contains(x));
 
     let expectedFourthWorkflowRun =
-      ['teamA/repoA', 'stage/max', 'WorkflowB', 'workflow_dispatch', '2'];
+      ['teamA/repoA', 'stage/max', 'WorkflowA', 'push', '123'];
     expectedFourthWorkflowRun.forEach(x => cy.get('.workflow-run-row').eq(3).contains(x));
+
+    let expectedFifthWorkflowRun =
+      ['teamA/repoA', 'stage/max', 'WorkflowB', 'workflow_dispatch', '2'];
+    expectedFifthWorkflowRun.forEach(x => cy.get('.workflow-run-row').eq(4).contains(x));
   });
 
   it('should filter workflow runs by status', () => {
@@ -102,7 +106,7 @@ describe('Given a team, some repos and workflow runs', () => {
     cy.get('.workflow-run-row').should('have.length', 1);
 
     let expectedWorkflowRun =
-      ['teamA/repoA', 'stage/dirk', 'WorkflowA', 'push', '125'];
+      ['teamA/repoA', 'stage/dirk', 'WorkflowA', 'push', '126'];
     expectedWorkflowRun.forEach(x => cy.get('.workflow-run-row').contains(x));
   });
 
