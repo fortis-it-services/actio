@@ -25,11 +25,11 @@
         <mat-form-field appearance="outline">
           <mat-label>Maximum Workflow Run Age</mat-label>
           <input matInput type="number" [formControlName]="maxWorkflowRunAgeControlKey">
-          <span matSuffix>&nbsp;days</span>
+          <span matTextSuffix>&nbsp;days</span>
         </mat-form-field>
         <mat-label>Polling Interval</mat-label>
-        <mat-slider min="10" max="60" step="1" thumbLabel="true"
-                    [formControlName]="pollingIntervalControlKey">
+        <mat-slider min="10" max="60" step="1" thumbLabel="true">
+          <input matSliderThumb [formControlName]="pollingIntervalControlKey"/>
         </mat-slider>
       </form>
       <form class="settings-form" [formGroup]="configurationFormGroup">
@@ -58,20 +58,20 @@
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>Workflow Names</mat-label>
-          <mat-chip-list #chipList aria-label="Workflow Name Selection"
+          <mat-chip-grid #chipList aria-label="Workflow Name Selection"
                          [formControlName]="workflowNameSelectionControlKey">
-            <mat-chip *ngFor="let name of workflowNamesFilter$ | async" (removed)="remove(name)">
+            <mat-chip-row *ngFor="let name of workflowNamesFilter$ | async" (removed)="remove(name)">
               {{ name }}
               <button matChipRemove>
                 <mat-icon>cancel</mat-icon>
               </button>
-            </mat-chip>
+            </mat-chip-row>
             <input placeholder="Add Workflow Name..."
                    [matChipInputFor]="chipList"
                    [matChipInputSeparatorKeyCodes]="chipSeparatorKeysCodes"
                    [matChipInputAddOnBlur]="true"
                    (matChipInputTokenEnd)="add($event)">
-          </mat-chip-list>
+          </mat-chip-grid>
         </mat-form-field>
       </form>
     </mat-sidenav>

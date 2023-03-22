@@ -27,7 +27,7 @@
   flex: 1 1 auto;
 }
 
-.mat-form-field {
+.mat-mdc-form-field {
   width: 240px;
 }
 
@@ -48,6 +48,7 @@
   align-items: center;
 }
 
-mat-slider {
-  width: 95%;
+.mat-mdc-slider {
+  width: 85%;
+  min-width: unset;
 }

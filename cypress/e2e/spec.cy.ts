@@ -49,7 +49,7 @@ describe('Given a team, some repos and workflow runs', () => {
     cy.wait(100);
 
     cy.get('.cdk-overlay-backdrop').click();
-    cy.get('.mat-icon').contains('close').click();
+    cy.get('.mat-icon').contains('close').click({force: true});
 
     cy.get('.workflow-run-row').should('have.length', 5);
 
@@ -101,7 +101,7 @@ describe('Given a team, some repos and workflow runs', () => {
     cy.wait(100)
 
     cy.get('.cdk-overlay-backdrop').click();
-    cy.get('.mat-icon').contains('close').click();
+    cy.get('.mat-icon').contains('close').click({force: true});
 
     cy.get('.workflow-run-row').should('have.length', 1);
 
@@ -142,7 +142,7 @@ describe('Given a team, some repos and workflow runs', () => {
     cy.wait(100)
 
     cy.get('.cdk-overlay-backdrop').click();
-    cy.get('.mat-icon').contains('close').click();
+    cy.get('.mat-icon').contains('close').click({force: true});
 
     cy.get('.workflow-run-row').should('have.length', 1);
 
@@ -171,13 +171,15 @@ describe('Given a team, some repos and workflow runs', () => {
     cy.get('.cdk-overlay-backdrop').click();
 
     let workflowNameToFilter = 'WorkflowB';
-    cy.get('mat-chip-list[ng-reflect-name=workflowNameSelectionControl]').type(workflowNameToFilter)
+    cy.get('mat-chip-grid[ng-reflect-name=workflowNameSelectionControl]')
+      .find('input')
+      .type(workflowNameToFilter, {force: true})
       .type('{enter}');
 
     // wait for state changes
     cy.wait(100);
 
-    cy.get('.mat-icon').contains('close').click();
+    cy.get('.mat-icon').contains('close').click({force: true});
 
     cy.get('.workflow-run-row').should('have.length', 1);
 
