@@ -1,7 +1,20 @@
 import { Injectable } from '@angular/core';
 import { GetResponseDataTypeFromEndpointMethod } from '@octokit/types';
 import { Octokit } from 'octokit';
-import { filter, from, groupBy, map, max, mergeAll, mergeMap, Observable, of, toArray } from 'rxjs';
+import {
+  catchError,
+  concatMap,
+  filter,
+  from,
+  groupBy,
+  map,
+  max,
+  mergeAll,
+  mergeMap,
+  Observable,
+  of,
+  toArray,
+} from 'rxjs';
 
 const o = new Octokit();
 export type GitHubUser = GetResponseDataTypeFromEndpointMethod<typeof o.rest.users.getAuthenticated>;
@@ -66,6 +79,26 @@ export interface GithubWorkflowRunModel {
   } | null
 }
 
+export interface GithubWorkflowJobModel {
+  id: number,
+  name: string,
+  status:  string | null,
+  conclusion:  string | null,
+  steps: [{
+    name: string,
+    status:  string | null,
+    conclusion:  string | null,
+    number: number,
+    started_at: string,
+    completed_at: string,
+  }]
+}
+
+export interface GithubWorkflowJobModelWithLogs {
+  workflowJob: GithubWorkflowJobModel,
+  logs: string,
+}
+
 export interface GitHubRateLimitModel {
   resources: any,
   rate: any,
@@ -79,6 +112,44 @@ export class GitHubService {
   private octokit: Octokit = new Octokit();
 
   constructor() {
+  }
+
+  loadGithubWorkflowJobModelWithLogs(githubWorkflowRunModel: GithubWorkflowRunModel)
+    : Observable<GithubWorkflowJobModelWithLogs[]> {
+    return this.loadGithubWorkflowJobs(githubWorkflowRunModel)
+      .pipe(
+        mergeAll(),
+        map(workflowJob => this.loadGithubWorkflowRunLogs(githubWorkflowRunModel, workflowJob)
+          .pipe(
+            catchError(_ => of('')),
+            map(logs => ({workflowJob, logs})),
+          )),
+        concatMap(loadLogs => loadLogs),
+        toArray(),
+      )
+  }
+
+  loadGithubWorkflowJobs(githubWorkflowRunModel: GithubWorkflowRunModel): Observable<GithubWorkflowJobModel[]> {
+    // @ts-ignore
+    return from(this.octokit.rest.actions.listJobsForWorkflowRun({
+      owner: githubWorkflowRunModel.repository.owner.login,
+      repo: githubWorkflowRunModel.repository.name,
+      run_id: githubWorkflowRunModel.id,
+    })).pipe(
+      map(data => data.data.jobs),
+    )
+  }
+
+  loadGithubWorkflowRunLogs(githubWorkflowRunModel: GithubWorkflowRunModel,
+                            githubWorkflowJobModel: GithubWorkflowJobModel): Observable<string> {
+    // @ts-ignore
+    return from(this.octokit.rest.actions.downloadJobLogsForWorkflowRun({
+      owner: githubWorkflowRunModel.repository.owner.login,
+      repo: githubWorkflowRunModel.repository.name,
+      job_id: githubWorkflowJobModel.id,
+    })).pipe(
+      map(data => data.data),
+    )
   }
 
   loadWorkflowRuns(teams: GitHubTeamModel[], maxWorkflowRunAge: number): Observable<GithubWorkflowRunModel[]> {

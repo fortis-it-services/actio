@@ -1,7 +1,43 @@
+.workflow-run-detail-container {
+  margin: 16px;
+}
+
+.workflow-run-detail-container > mat-card {
+  width: 100%;
+}
+
+.header-image {
+  background-size: cover !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .label-icon {
   margin-right: 8px;
 }
 
 .pre-wrap {
   white-space: pre-wrap !important;
+}
+
+.align-self-start {
+  align-self: start;
+}
+
+mat-panel-description {
+  justify-content: space-between;
+}
+
+.jobs-container {
+  max-height: 600px;
+  display: flex;
+}
+
+.jobs-container > * {
+  overflow: auto;
+}
+
+.jobs-container > mat-list {
+  min-width: fit-content;
 }

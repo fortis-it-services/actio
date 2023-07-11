@@ -25,5 +25,88 @@
         </mat-list-item>
       </mat-list>
     </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="label-icon">work</mat-icon>
+        Workflow jobs
+      </ng-template>
+      <mat-card>
+        <mat-card-header>
+          <a mat-card-avatar class="header-image" [style.background]="'url(' + workflowRun.actor?.avatar_url + ')'"
+             [href]="workflowRun.actor?.html_url" target="_blank"></a>
+          <mat-card-title>{{workflowRun.actor?.login}}</mat-card-title>
+          <mat-card-subtitle>Actor: {{workflowRun.actor?.type}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-header *ngIf="workflowRun.actor?.login !== workflowRun.triggering_actor?.login">
+          <a mat-card-avatar class="header-image"
+             [style.background]="'url(' + workflowRun.triggering_actor?.avatar_url + ')'"
+             [href]="workflowRun.triggering_actor?.html_url" target="_blank"></a>
+          <mat-card-title>{{workflowRun.triggering_actor?.login}}</mat-card-title>
+          <mat-card-subtitle>Triggering Actor: {{workflowRun.triggering_actor?.type}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content *ngIf="workflowJobsWithLogs$ | async as workflowJobsWithLogs">
+          <mat-accordion>
+            <mat-expansion-panel *ngFor="let workflowJobWithLog of workflowJobsWithLogs">
+              <mat-expansion-panel-header
+                [class.neutral]="workflowJobWithLog.workflowJob.conclusion === conclusion.CANCELLED"
+                [class.failure]="workflowJobWithLog.workflowJob.conclusion === conclusion.FAILURE"
+                [class.in-progress]="workflowJobWithLog.workflowJob.status === status.IN_PROGRESS || workflowJobWithLog.workflowJob.status === status.QUEUED">
+                <mat-panel-title>
+                  <mat-icon mat-list-icon *ngIf="workflowJobWithLog.workflowJob.status === status.QUEUED">dynamic_feed
+                  </mat-icon>
+                  <mat-progress-spinner mat-list-icon mode="indeterminate" diameter="24"
+                                        *ngIf="workflowJobWithLog.workflowJob.status === status.IN_PROGRESS ||
+                                         workflowJobWithLog.workflowJob.status === 'pending'"></mat-progress-spinner>
+                  <mat-icon mat-list-icon matTooltip="Success" class="icon-success"
+                            *ngIf="workflowJobWithLog.workflowJob.conclusion === conclusion.SUCCESS">check_circle
+                  </mat-icon>
+                  <mat-icon mat-list-icon matTooltip="Skipped"
+                            *ngIf="workflowJobWithLog.workflowJob.conclusion === conclusion.SKIPPED">skip_next
+                  </mat-icon>
+                  <mat-icon mat-list-icon matTooltip="Failure" class="icon-failure"
+                            *ngIf="workflowJobWithLog.workflowJob.conclusion === conclusion.FAILURE">cancel
+                  </mat-icon>
+                  <mat-icon mat-list-icon matTooltip="Cancelled"
+                            *ngIf="workflowJobWithLog.workflowJob.conclusion === conclusion.CANCELLED">error
+                  </mat-icon>
+                </mat-panel-title>
+                <mat-panel-description>
+                  {{workflowJobWithLog.workflowJob.name}}
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <div class="jobs-container">
+                <mat-list>
+                  <mat-list-item *ngFor="let step of workflowJobWithLog.workflowJob.steps">
+                    <mat-icon mat-list-icon *ngIf="step.status === status.QUEUED">dynamic_feed</mat-icon>
+                    <mat-progress-spinner mat-list-icon mode="indeterminate" diameter="24"
+                                          *ngIf="step.status === status.IN_PROGRESS || step.status === 'pending'"></mat-progress-spinner>
+                    <mat-icon mat-list-icon matTooltip="Success" class="icon-success"
+                              *ngIf="step.conclusion === conclusion.SUCCESS">check_circle
+                    </mat-icon>
+                    <mat-icon mat-list-icon matTooltip="Skipped"
+                              *ngIf="step.conclusion === conclusion.SKIPPED">skip_next
+                    </mat-icon>
+                    <mat-icon mat-list-icon matTooltip="Failure" class="icon-failure"
+                              *ngIf="step.conclusion === conclusion.FAILURE">cancel
+                    </mat-icon>
+                    <mat-icon mat-list-icon matTooltip="Cancelled"
+                              *ngIf="step.conclusion === conclusion.CANCELLED">error
+                    </mat-icon>
+                    <div mat-line>{{step.name}}</div>
+                    <div mat-line>{{step.conclusion}}</div>
+                    <div mat-line>{{step.status}}</div>
+<!--                    <div mat-line>{{step.started_at | date: 'medium'}}</div>-->
+<!--                    <div mat-line>{{step.completed_at | date: 'medium'}}</div>-->
+                  </mat-list-item>
+                </mat-list>
+                <div>
+                  <pre class="pre-wrap">{{workflowJobWithLog.logs}}</pre>
+                </div>
+              </div>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </mat-card-content>
+      </mat-card>
+    </mat-tab>
   </mat-tab-group>
 </div>
