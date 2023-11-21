@@ -1,5 +1,51 @@
 /* You can add global styles to this file, and also import other style files */
 
+@use '@angular/material' as mat;
+@use 'sass:map';
+
+@include mat.core();
+@import 'fortis-theme';
+
+$fortis-dark-primary: mat.define-palette($black-palette, 500, 300, 700);
+$fortis-dark-accent: mat.define-palette($orange-palette, 500, 300, 700);
+$fortis-dark-warn: mat.define-palette($red-palette, 500);
+$fortis-dark-theme: mat.define-dark-theme((
+  color: (
+    primary: $fortis-dark-primary,
+    accent: $fortis-dark-accent,
+    warn: $fortis-dark-warn,
+  )
+));
+
+@function modify-background($theme, $background-color) {
+  $theme-color: map-get($theme, color);
+  $color-background-palette: map-get($theme-color, background);
+  $color-background-palette: map-merge($color-background-palette, (background: $background-color));
+  $color-background-palette: map-merge($color-background-palette, (card: $background-color));
+  $color-background-palette: map-merge($color-background-palette, (dialog: $background-color));
+
+  $modified-theme-color: map-merge($theme-color, (background: $color-background-palette));
+  $modified-theme: map-merge($theme, (color: $modified-theme-color));
+
+  @return $modified-theme;
+}
+
+@function getColor($color, $hue: 500) {
+  $color-config: mat.get-color-config($fortis-dark-theme);
+  $palette: map.get($color-config, $color);
+  @return mat.get-color-from-palette($palette, $hue);
+}
+
+@function getContrastColor($color, $hue: 500) {
+  $color-config: mat.get-color-config($fortis-dark-theme);
+  $palette: map.get($color-config, $color);
+  @return mat.get-contrast-color-from-palette($palette, $hue);
+}
+
+$fortis-dark-theme: modify-background($fortis-dark-theme, $background-color);
+
+@include mat.all-component-colors($fortis-dark-theme);
+
 html, body {
   height: 100%;
 }
@@ -9,28 +55,16 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
-.in-progress {
-  background-color: #f0f5fc !important;
+::-webkit-scrollbar {
+  width: 8px;
 }
 
-.failure {
-  background-color: #f8e5e5 !important;
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 2px getColor("primary");
+  border-radius: 10px;
 }
 
-.neutral {
-  background-color: #e8e8e8 !important;
-}
-
-.icon-success {
-  color: #339900;
-}
-
-.icon-failure {
-  color: #cc3300;
-}
-
-.brand-icon {
-  width: 24px !important;
-  height: 24px !important;
-  line-height: 24px !important;
+::-webkit-scrollbar-thumb {
+  background: getColor("accent");
+  border-radius: 10px;
 }

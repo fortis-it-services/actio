@@ -29,7 +29,7 @@ import { WorkflowRunTableComponent } from './workflow-run-table/workflow-run-tab
 import {MatTableModule} from '@angular/material/table';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {SettingsService} from './settings.service';
-import {registerLocaleData} from '@angular/common';
+import {NgOptimizedImage, registerLocaleData} from '@angular/common';
 import de from '@angular/common/locales/de';
 import en from '@angular/common/locales/en';
 import fr from '@angular/common/locales/fr';
@@ -38,6 +38,8 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {WorkflowRunDetailsComponent} from './workflow-run-details/workflow-run-details.component';
 import {MatTabsModule} from '@angular/material/tabs';
 import {WorkflowRunStatusIconComponent} from './workflow-run-table/workflow-run-status-icon/workflow-run-status-icon.component';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatLineModule} from '@angular/material/core';
 
 registerLocaleData(de);
 registerLocaleData(en);
@@ -81,6 +83,9 @@ registerLocaleData(fr);
     MatListModule,
     MatExpansionModule,
     MatTabsModule,
+    MatSlideToggleModule,
+    NgOptimizedImage,
+    MatLineModule,
   ],
   providers: [
     {
