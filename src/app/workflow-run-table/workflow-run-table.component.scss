@@ -31,6 +31,12 @@ table {
   background-color: styles.getColor('primary');
 }
 
+.workflow-run-row.cancelled {
+  color: styles.getColor('accent', 300);
+  background-color: styles.getColor('primary', 300);
+  filter: brightness(50%);
+}
+
 .workflow-run-row:hover {
   color: styles.getContrastColor('accent', 300);
   background-color: styles.getColor('accent', 300);

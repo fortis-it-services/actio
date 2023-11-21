@@ -67,6 +67,7 @@
   <tr mat-header-row *matHeaderRowDef="columnsToDisplay; sticky: true"></tr>
   <tr mat-row
       *matRowDef="let workflowRun; columns: columnsToDisplay"
+      [class.cancelled]="workflowRun.conclusion === conclusion.CANCELLED || workflowRun.conclusion === conclusion.SKIPPED"
       [class.failure]="workflowRun.conclusion === conclusion.FAILURE"
       (click)="toggleExpandedWorkflowRun(workflowRun)"
       class="workflow-run-row">
