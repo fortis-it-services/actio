@@ -5,6 +5,9 @@ jobs:
   main:
     name: "Main"
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
       - name: "Checkout Source Code"
         uses: actions/checkout@v3
@@ -35,3 +38,8 @@ jobs:
 
       - name: "Build Docker Image"
         run: docker build -t actio -f docker/Dockerfile .
+
+      - name: "Release"
+        run: npx semantic-release
+        env:
+          DOCKER_USERNAME: "CI"
