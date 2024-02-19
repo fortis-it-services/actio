@@ -1,6 +1,12 @@
 ---
 name: "Main Workflow"
+
 on: push
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
 jobs:
   main:
     name: "Main"
