@@ -7,5 +7,5 @@ RUN npm ci && \
 
 FROM nginx:alpine
 
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY docker/nginx.conf /etc/nginx/nginx.conf
 COPY --from=build /build/dist/actio /usr/share/nginx/html
