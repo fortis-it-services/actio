@@ -43,7 +43,7 @@
     "@angular/compiler-cli": "^17.0.0",
     "@cypress/schematic": "^2.5.0",
     "@octokit/types": "^12.3.0",
-    "@semantic-release-plus/docker": "^3.1.2",
+    "@semantic-release/exec": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
     "@types/jasmine": "~4.3.1",
     "@types/node": "^16.0.0",
@@ -80,13 +80,13 @@
       "@semantic-release/release-notes-generator",
       "@semantic-release/npm",
       "@semantic-release/git",
+      "@semantic-release/github",
       [
-        "@semantic-release-plus/docker",
+        "@semantic-release/exec",
         {
-          "name": "ghcr.io/fortis-it-services/actio"
+          "publishCmd": "echo 'RELEASE_VERSION=${nextRelease.version}' >> \"$GITHUB_ENV\""
         }
-      ],
-      "@semantic-release/github"
+      ]
     ]
   }
 }
