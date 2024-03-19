@@ -1,75 +1,24 @@
-import { Injectable } from '@angular/core';
-import { GetResponseDataTypeFromEndpointMethod } from '@octokit/types';
-import { Octokit } from 'octokit';
-import { filter, from, groupBy, map, max, mergeAll, mergeMap, Observable, of, toArray } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {GetResponseDataTypeFromEndpointMethod} from '@octokit/types';
+import {Octokit} from 'octokit';
+import {filter, from, groupBy, map, max, mergeAll, mergeMap, Observable, of, toArray} from 'rxjs';
 
 const o = new Octokit();
-export type GitHubUser = GetResponseDataTypeFromEndpointMethod<typeof o.rest.users.getAuthenticated>;
 
-export interface GitHubTeamModel {
-  slug: string,
-  organization: {
-    login: string
-  }
-}
+// https://stackoverflow.com/questions/41253310/typescript-retrieve-element-type-information-from-array-type
+type ArrayElement<ArrayType extends readonly unknown[]> =
+  ArrayType extends readonly (infer ElementType)[] ? ElementType : never;
 
-export interface GitHubRepositoryModel {
-  name: string,
-  owner: {
-    login: string,
-  },
-  archived?: boolean,
-}
+export type User = GetResponseDataTypeFromEndpointMethod<typeof o.rest.users.getAuthenticated>;
 
-export interface GithubWorkflowRunModel {
-  id: number,
-  name?: string | null,
-  workflow_id: number,
-  repository: {
-    name: string,
-    full_name: string,
-    owner: {
-      login: string,
-    }
-  }
-  event: string,
-  run_number: number,
-  run_started_at?: string | null,
-  head_branch: string | null,
-  status: string | null,
-  conclusion: string | null,
-  html_url: string,
-  actor?: {
-    login: string,
-    type: string,
-    avatar_url: string,
-    html_url: string,
-  },
-  triggering_actor?: {
-    login: string,
-    type: string,
-    avatar_url: string,
-    html_url: string,
-  },
-  head_commit: {
-    id: string,
-    message: string,
-    timestamp?: string | null,
-    author: {
-      name: string,
-      email: string,
-    } | null,
-    committer: {
-      name: string,
-      email: string,
-    } | null,
-  } | null
-}
+export type Team = ArrayElement<GetResponseDataTypeFromEndpointMethod<typeof o.rest.teams.listForAuthenticatedUser>>;
 
-export interface GitHubRateLimitModel {
-  resources: any,
-  rate: any,
-}
+export type Repository = ArrayElement<GetResponseDataTypeFromEndpointMethod<typeof o.rest.repos.listForAuthenticatedUser>>
+  | ArrayElement<GetResponseDataTypeFromEndpointMethod<typeof o.rest.teams.listReposInOrg>>;
+
+export type WorkflowRun = ArrayElement<GetResponseDataTypeFromEndpointMethod<typeof o.rest.actions.listWorkflowRunsForRepo>['workflow_runs']>;
+
+export type RateLimit = GetResponseDataTypeFromEndpointMethod<typeof o.rest.rateLimit.get>;
 
 @Injectable({
   providedIn: 'root',
@@ -81,7 +30,7 @@ export class GitHubService {
   constructor() {
   }
 
-  loadWorkflowRuns(teams: GitHubTeamModel[], maxWorkflowRunAge: number): Observable<GithubWorkflowRunModel[]> {
+  loadWorkflowRuns(teams: Team[], maxWorkflowRunAge: number): Observable<WorkflowRun[]> {
     return of(teams).pipe(
       mergeAll(),
       mergeMap(it => this.loadRepositories(it.slug, it.organization.login)),
@@ -90,15 +39,15 @@ export class GitHubService {
     )
   }
 
-  checkRateLimit(): Observable<GitHubRateLimitModel> {
+  checkRateLimit(): Observable<RateLimit> {
     return from(this.octokit.rest.rateLimit.get())
       .pipe(
         map(it => it.data),
       )
   }
 
-  login(token: string): Observable<GitHubUser> {
-    this.octokit = new Octokit({ auth: token });
+  login(token: string): Observable<User> {
+    this.octokit = new Octokit({auth: token});
 
     return from(this.octokit.rest.users.getAuthenticated())
       .pipe(
@@ -106,14 +55,14 @@ export class GitHubService {
       );
   }
 
-  loadTeams(): Observable<GitHubTeamModel[]> {
+  loadTeams(): Observable<Team[]> {
     return from(this.octokit.rest.teams.listForAuthenticatedUser())
       .pipe(
         map(it => it.data),
       )
   }
 
-  private loadRepositories(team_slug: string, org?: string): Observable<GitHubRepositoryModel> {
+  private loadRepositories(team_slug: string, org?: string): Observable<Repository> {
     return from(this.octokit.paginate(
       this.octokit.rest.teams.listReposInOrg,
       {
@@ -126,23 +75,22 @@ export class GitHubService {
     )
   }
 
-  private loadWorkflowRunsForRepo(owner: string, repo: string, maxWorkflowRunAge: number): Observable<GithubWorkflowRunModel> {
+  private loadWorkflowRunsForRepo(owner: string, repo: string, maxWorkflowRunAge: number): Observable<WorkflowRun> {
     let date = new Date()
     date.setDate(date.getDate() - maxWorkflowRunAge)
 
-    return from(this.octokit.paginate(
-      this.octokit.rest.actions.listWorkflowRunsForRepo,
-      {
-        owner,
-        repo,
-        created: `>${date.toISOString().split('T')[0]}`,
-        per_page: 100,
-      },
-    )).pipe(
+    const paginationConfiguration = {
+      owner,
+      repo,
+      created: `>${date.toISOString().split('T')[0]}`,
+      per_page: 100,
+    }
+
+    return from(this.octokit.paginate(this.octokit.rest.actions.listWorkflowRunsForRepo, paginationConfiguration)).pipe(
       mergeAll(),
-      groupBy(it => `${it.workflow_id}${it.head_branch}`),
+      groupBy((it: WorkflowRun) => `${it.workflow_id}${it.head_branch}`),
       mergeMap(it => it.pipe(
-        max<GithubWorkflowRunModel>((a, b) => a.id - b.id),
+        max<WorkflowRun>((a, b) => a.id - b.id),
       )),
     )
   }

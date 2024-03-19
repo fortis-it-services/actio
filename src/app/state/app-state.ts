@@ -1,6 +1,6 @@
 import { UserState } from './user/user-state';
 import { ConfigurationState } from './configuration/configuration-state';
-import { GithubWorkflowRunModel } from '../git-hub.service';
+import { WorkflowRun } from '../git-hub.service';
 import {
   Action,
   ActionCreator,
@@ -20,7 +20,7 @@ import { workflowRunsFeatureKey } from './workflow/workflow.selectors';
 export interface AppState {
   [userFeatureKey]: UserState,
   [configurationFeatureKey]: ConfigurationState,
-  [workflowRunsFeatureKey]: GithubWorkflowRunModel[],
+  [workflowRunsFeatureKey]: WorkflowRun[],
 }
 
 export const reducers: ActionReducerMap<AppState> = {

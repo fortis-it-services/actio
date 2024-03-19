@@ -1,7 +1,7 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { UserState } from './user-state';
 import { selectTeamsFilter } from '../configuration/configuration.selectors';
-import { GitHubTeamModel } from '../../git-hub.service';
+import { Team } from '../../git-hub.service';
 
 export const userFeatureKey = 'user'
 export const selectUserFeature = createFeatureSelector<UserState>(userFeatureKey)
@@ -35,7 +35,7 @@ export const selectSortedUserTeams = createSelector(
 export const selectFilteredUserTeams = createSelector(
   selectUserFeature,
   selectTeamsFilter,
-  (state: UserState, filter: GitHubTeamModel[]) => {
+  (state: UserState, filter: Team[]) => {
     return state.teams
       .filter(team => filter.map(it => `${it.organization}-${it.slug}`).includes(`${team.organization}-${team.slug}`))
   },

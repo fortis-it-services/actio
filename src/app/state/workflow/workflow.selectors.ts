@@ -1,5 +1,5 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { GithubWorkflowRunModel } from '../../git-hub.service';
+import { WorkflowRun } from '../../git-hub.service';
 import {
   selectConclusionFilter,
   selectStatusFilter,
@@ -7,7 +7,7 @@ import {
 } from '../configuration/configuration.selectors';
 
 export const workflowRunsFeatureKey = 'workflowRuns'
-export const selectWorkflowRuns = createFeatureSelector<GithubWorkflowRunModel[]>(workflowRunsFeatureKey)
+export const selectWorkflowRuns = createFeatureSelector<WorkflowRun[]>(workflowRunsFeatureKey)
 
 export const selectWorkflowRunsSortedAndFiltered = createSelector(
   selectWorkflowRuns,
@@ -15,7 +15,7 @@ export const selectWorkflowRunsSortedAndFiltered = createSelector(
   selectConclusionFilter,
   selectWorkflowNamesFilter,
   (
-    workflowRuns: GithubWorkflowRunModel[],
+    workflowRuns: WorkflowRun[],
     statusFilter: string[],
     conclusionFilter: string[],
     workflowNameFilter: string[],
@@ -27,7 +27,7 @@ export const selectWorkflowRunsSortedAndFiltered = createSelector(
 )
 
 function satisfiesCurrentFilters(
-  workflowRun: GithubWorkflowRunModel,
+  workflowRun: WorkflowRun,
   statusFilter: string[],
   conclusionFilter: string[],
   workflowNameFilter: string[],

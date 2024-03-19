@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { GitHubTeamModel } from '../../git-hub.service';
+import { Team } from '../../git-hub.service';
 
 export const changeToken = createAction(
   '[Configuration] Change Token',
@@ -8,7 +8,7 @@ export const changeToken = createAction(
 
 export const changeTeamsFilter = createAction(
   '[Configuration] Change Teams Filter',
-  props<{ filter: GitHubTeamModel[] }>(),
+  props<{ filter: Team[] }>(),
 );
 
 export const changeStatusFilter = createAction(

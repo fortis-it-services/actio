@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {Observable} from 'rxjs';
 import {Store} from '@ngrx/store';
 import {selectWorkflowRunsSortedAndFiltered} from '../state/workflow/workflow.selectors';
-import {GithubWorkflowRunModel} from '../git-hub.service';
+import {WorkflowRun} from '../git-hub.service';
 import {WorkflowRunStatus} from '../workflow-run-status.enum';
 import {WorkflowRunConclusion} from '../workflow-run-conclusion.enum';
 import {animate, state, style, transition, trigger} from '@angular/animations';
@@ -21,10 +21,10 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
 })
 export class WorkflowRunTableComponent {
 
-  workflowRuns$: Observable<GithubWorkflowRunModel[]>;
+  workflowRuns$: Observable<WorkflowRun[]>;
   status = WorkflowRunStatus;
   conclusion = WorkflowRunConclusion;
-  expandedWorkflowRun: GithubWorkflowRunModel | null;
+  expandedWorkflowRun: WorkflowRun | null;
 
   columnsToDisplay: Array<string> = [
     'status',
@@ -38,11 +38,11 @@ export class WorkflowRunTableComponent {
     'expander',
   ];
 
-  isExpandedWorkflowRun(workflowRun: GithubWorkflowRunModel) {
+  isExpandedWorkflowRun(workflowRun: WorkflowRun) {
     return this.expandedWorkflowRun?.id === workflowRun.id;
   }
 
-  toggleExpandedWorkflowRun(workflowRun: GithubWorkflowRunModel) {
+  toggleExpandedWorkflowRun(workflowRun: WorkflowRun) {
     this.expandedWorkflowRun = this.isExpandedWorkflowRun(workflowRun) ? null : workflowRun;
   }
 

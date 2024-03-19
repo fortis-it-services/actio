@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {GithubWorkflowRunModel} from '../git-hub.service';
+import {WorkflowRun} from '../git-hub.service';
 import {WorkflowRunStatus} from '../workflow-run-status.enum';
 import {WorkflowRunConclusion} from '../workflow-run-conclusion.enum';
 
@@ -13,7 +13,7 @@ export class WorkflowRunDetailsComponent {
   status = WorkflowRunStatus;
   conclusion = WorkflowRunConclusion;
   @Input()
-  workflowRun: GithubWorkflowRunModel;
+  workflowRun: WorkflowRun;
 
   constructor() {
   }

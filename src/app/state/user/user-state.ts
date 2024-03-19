@@ -1,7 +1,7 @@
-import { GitHubRateLimitModel, GitHubTeamModel, GitHubUser } from '../../git-hub.service';
+import { RateLimit, Team, User } from '../../git-hub.service';
 
 export interface UserState {
-  profile: GitHubUser | null,
-  rateLimits: GitHubRateLimitModel,
-  teams: GitHubTeamModel[],
+  profile: User | null,
+  rateLimits: RateLimit,
+  teams: Team[],
 }

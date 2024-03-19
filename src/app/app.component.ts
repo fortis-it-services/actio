@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import { debounceTime, distinctUntilChanged, map, Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { GitHubRateLimitModel, GitHubTeamModel, GitHubUser, GithubWorkflowRunModel } from './git-hub.service';
+import { RateLimit, Team, User, WorkflowRun } from './git-hub.service';
 import {
   addWorkflowNameFilter,
   changeConclusionFilter,
@@ -41,10 +41,10 @@ export class AppComponent {
   workflowRunConclusions = Object.values(WorkflowRunConclusion)
   chipSeparatorKeysCodes: number[] = [ENTER, COMMA]
 
-  user$: Observable<GitHubUser | null>
-  rateLimits$: Observable<GitHubRateLimitModel>
-  teams$: Observable<GitHubTeamModel[]>
-  workflowRuns$: Observable<GithubWorkflowRunModel[]>
+  user$: Observable<User | null>
+  rateLimits$: Observable<RateLimit>
+  teams$: Observable<Team[]>
+  workflowRuns$: Observable<WorkflowRun[]>
   workflowNamesFilter$: Observable<string[]>
   configurationState$: Observable<ConfigurationState>
 
@@ -122,7 +122,7 @@ export class AppComponent {
       .subscribe(it => this.configurationFormGroup.controls[this.conclusionSelectionControlKey].setValue(it))
   }
 
-  compareTeams(o1: GitHubTeamModel, o2: GitHubTeamModel) {
+  compareTeams(o1: Team, o2: Team) {
     return o1.slug == o2.slug && o1.organization.login == o2.organization.login
   }
 

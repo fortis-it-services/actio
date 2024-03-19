@@ -1,4 +1,4 @@
-import { GitHubTeamModel } from '../../git-hub.service';
+import { Team } from '../../git-hub.service';
 
 export interface ConfigurationState {
   polling: {
@@ -10,7 +10,7 @@ export interface ConfigurationState {
   filter: {
     conclusion: string[],
     status: string[],
-    teams: GitHubTeamModel[],
+    teams: Team[],
     workflowNames: string[],
   },
   maxWorkflowRunAge: number,
